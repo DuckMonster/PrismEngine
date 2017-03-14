@@ -30,7 +30,7 @@ void PR_CRenderScene::Clear( ) {
 
 /**	Add Mesh
 *******************************************************************************/
-void PR_CRenderScene::AddMesh( PR_CMeshAsset* mesh, PR_CMaterial* material, glm::mat4& transform ) {
+void PR_CRenderScene::AddMesh( PR_CMeshResource* mesh, PR_CMaterial* material, glm::mat4& transform ) {
 	SMeshNode* meshNode = new SMeshNode;
 
 	meshNode->m_Mesh		= mesh;

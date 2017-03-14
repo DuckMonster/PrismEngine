@@ -9,9 +9,12 @@ uniform mat4 u_World;
 
 out VS_OUT {
 	vec3 normal;
+	vec2 uv;
 } vs_out;
 
 void main() {
-	gl_Position = u_Camera * u_World * vec4(a_Position, 1.0);
-	vs_out.normal = (u_World * vec4(a_Normal, 0.0)).xyz;
+	gl_Position		= u_Camera * u_World * vec4(a_Position, 1.0);
+
+	vs_out.normal	= (u_World * vec4(a_Normal, 0.0)).xyz;
+	vs_out.uv		= a_UV;
 }

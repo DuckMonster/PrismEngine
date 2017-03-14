@@ -3,6 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <Prism/Context.h>
 #include <Prism/Utils/DirLight.h>
+#include <Prism/Utils/DefaultShader.h>
 
 /**	Constructor
 *******************************************************************************/
@@ -12,11 +13,18 @@ CProgram::CProgram( ) {
 /**	Init
 *******************************************************************************/
 void CProgram::Init( ) {
-	m_shader	= PR_CAsset::Load<PR_CShaderAsset>( "test_shader" );
-	m_mesh		= PR_CAsset::Load<PR_CMeshAsset>( "UnitCube.fbx" );
-	m_plane		= PR_CAsset::Load<PR_CMeshAsset>( "UnitPlane.fbx" );
+	m_Shader	= PR_CResource::Load<PR_CShaderResource>( "test_shader" );
+	m_mesh		= PR_CResource::Load<PR_CMeshResource>( "UnitCube.fbx" );
+	m_plane		= PR_CResource::Load<PR_CMeshResource>( "UnitPlane.fbx" );
+	m_Texture	= PR_CResource::Load<PR_CTextureResource>( "sample.png" );
 
-	m_Material.SetShader( m_shader );
+	m_Framebuffer = PR_CResource::Create<PR_CFramebufferResource>( );
+	m_FBTexture = PR_CResource::Create<PR_CTextureResource>( );
+
+	m_Framebuffer->SetResolution( 400, 300 );
+	m_Framebuffer->BindTexture( m_FBTexture );
+
+	m_Material.SetShader( m_Shader );
 	m_Material.SetColor( glm::vec4( 1.f, 0.f, 0.f, 1.f ) );
 
 	m_GroundMaterial = m_Material;
@@ -66,5 +74,26 @@ void CProgram::Render( double delta ) {
 	world = glm::scale( world, glm::vec3( 100.f ) );
 	scene.AddMesh( m_plane, &m_GroundMaterial, world );
 
+	m_Texture->Bind( 0 );
 	m_renderer.Render( scene );
+
+	glDisable( GL_DEPTH_TEST );
+
+	float left = -1.f,
+		right = 0.5f,
+		top = 0.f,
+		bottom = -0.5f,
+		width = right - left,
+		height = top - bottom;
+
+	glm::mat4 quadMatrix(
+		1.f, 0.f, 0.f, 0.f,
+		0.f, 1.f, 0.f, 0.f,
+		0.f, 0.f, 1.f, 0.f,
+		0.f, 0.f, 0.f, 1.f
+	);
+
+	GetQuadShader( )->Use( );
+	GetQuadShader( )->Set( "u_QuadMatrix", quadMatrix );
+	glDrawArrays( GL_QUADS, 0, 4 );
 }

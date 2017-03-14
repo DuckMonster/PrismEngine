@@ -1,4 +1,4 @@
-#include <Prism/Asset/MeshAsset.h>
+#include <Prism/Resource/MeshResource.h>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -6,18 +6,26 @@
 #include <iostream>
 #include <vector>
 
-PR_CMeshAsset::PR_CMeshAsset( ) :
-	PR_CAsset( ),
-	m_objectHandle( -1 ), m_positionHandle( -1 ), m_elementsHandle( -1 ),
+/**	Constructor
+*******************************************************************************/
+PR_CMeshResource::PR_CMeshResource( ) :
+	PR_CResource( ),
+	m_objectHandle( -1 ),
+	m_positionHandle( -1 ), m_normalHandle( -1 ), m_uvHandle( -1 ),
+	m_elementsHandle( -1 ),
 	m_vertexCount( 0 ) {
 
 }
 
-PR_CMeshAsset::~PR_CMeshAsset( ) {
+/**	Destructor
+*******************************************************************************/
+PR_CMeshResource::~PR_CMeshResource( ) {
 
 }
 
-bool PR_CMeshAsset::Load( const std::string& path ) {
+/**	Load
+*******************************************************************************/
+bool PR_CMeshResource::Load( const std::string& path ) {
 	// Gen buffers
 	glGenVertexArrays( 1, &m_objectHandle );
 	glGenBuffers( 1, &m_positionHandle );
@@ -32,7 +40,6 @@ bool PR_CMeshAsset::Load( const std::string& path ) {
 	// Bind vertex objects
 	glBindVertexArray( m_objectHandle );
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_elementsHandle );
-
 
 	glBindBuffer( GL_ARRAY_BUFFER, m_positionHandle );
 	glEnableVertexAttribArray( 0 );
@@ -51,16 +58,61 @@ bool PR_CMeshAsset::Load( const std::string& path ) {
 	return true;
 }
 
-void PR_CMeshAsset::Release( ) {
+/**	Create
+*******************************************************************************/
+bool PR_CMeshResource::Create( ) {
+	// Gen buffers
+	glGenVertexArrays( 1, &m_objectHandle );
+	glGenBuffers( 1, &m_positionHandle );
+	glGenBuffers( 1, &m_normalHandle );
+	glGenBuffers( 1, &m_uvHandle );
+	glGenBuffers( 1, &m_elementsHandle );
+
+	// Bind vertex objects
+	glBindVertexArray( m_objectHandle );
+	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_elementsHandle );
+
+	glBindBuffer( GL_ARRAY_BUFFER, m_positionHandle );
+	glEnableVertexAttribArray( 0 );
+	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, 0 );
+
+	glBindBuffer( GL_ARRAY_BUFFER, m_normalHandle );
+	glEnableVertexAttribArray( 1 );
+	glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, 0, 0 );
+
+	glBindBuffer( GL_ARRAY_BUFFER, m_uvHandle );
+	glEnableVertexAttribArray( 2 );
+	glVertexAttribPointer( 2, 2, GL_FLOAT, GL_FALSE, 0, 0 );
+
+	glBindVertexArray( 0 );
+
+	return true;
 }
 
-void PR_CMeshAsset::Render( ) {
+/**	Release
+*******************************************************************************/
+void PR_CMeshResource::Delete( ) {
+	if (m_objectHandle == -1)
+		return;
+
+	glDeleteVertexArrays( 1, &m_objectHandle );
+	glDeleteBuffers( 1, &m_positionHandle );
+	glDeleteBuffers( 1, &m_normalHandle );
+	glDeleteBuffers( 1, &m_uvHandle );
+	glDeleteBuffers( 1, &m_elementsHandle );
+}
+
+/**	Render
+*******************************************************************************/
+void PR_CMeshResource::Render( ) {
 	glBindVertexArray( m_objectHandle );
 	glDrawElements( GL_TRIANGLES, m_vertexCount, GL_UNSIGNED_INT, 0 );
 	glBindVertexArray( 0 );
 }
 
-bool PR_CMeshAsset::LoadAssimp( const char* fileName ) {
+/**	Load Assimp
+*******************************************************************************/
+bool PR_CMeshResource::LoadAssimp( const char* fileName ) {
 	using namespace std;
 	using namespace glm;
 

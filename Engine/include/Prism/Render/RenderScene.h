@@ -1,5 +1,5 @@
 #pragma once
-#include <Prism/Asset/MeshAsset.h>
+#include <Prism/Resource/MeshResource.h>
 #include <Prism/Render/Material.h>
 #include <Prism/Utils/DirLight.h>
 #include <glm/matrix.hpp>
@@ -23,7 +23,7 @@ public:
 	struct SMeshNode : public SNode {
 		SMeshNode( ) : SNode( NODE_MESH ), m_Mesh( NULL ), m_Material( NULL ) {}
 
-		PR_CMeshAsset*	m_Mesh;
+		PR_CMeshResource*	m_Mesh;
 		PR_CMaterial*	m_Material;
 		glm::mat4		m_Transform;
 	};
@@ -34,7 +34,7 @@ public:
 
 	void Clear( );
 
-	void AddMesh( PR_CMeshAsset* mesh, PR_CMaterial* material, glm::mat4& transform );
+	void AddMesh( PR_CMeshResource* mesh, PR_CMaterial* material, glm::mat4& transform );
 	SNode* GetRoot( ) { return m_RootNode; }
 
 	void SetCameraMatrix( const glm::mat4& cameraMatrix ) { m_CameraMatrix = cameraMatrix; }

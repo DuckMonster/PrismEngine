@@ -2,6 +2,7 @@
 
 in VS_OUT {
 	vec3 normal;
+	vec2 uv;
 } fs_in;
 
 struct Material {
@@ -13,6 +14,7 @@ struct Light {
 	vec3 direction;
 };
 
+uniform sampler2D u_Sampler;
 uniform Material u_Material;
 uniform Light u_Light;
 
@@ -31,4 +33,6 @@ void main() {
 	}
 
 	o_Color = vec4(u_Material.color.xyz * diffuse, u_Material.color.w);
+	o_Color = vec4(fs_in.uv, 0.0, 1.0);
+	o_Color = texture(u_Sampler, fs_in.uv);
 }

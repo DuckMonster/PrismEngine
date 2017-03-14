@@ -14,6 +14,7 @@ enum PR_PRISM_LOG_LEVEL {
 class PR_CLogger {
 public:
 	static bool HandleAssert( char* file, int line, char* msg );
+	static PR_PRISM_LOG_LEVEL	sm_LogLevel;
 
 public:
 	PR_CLogger( PR_PRISM_LOG_LEVEL level );
@@ -24,7 +25,12 @@ public:
 
 private:
 	template<typename TValueType>
-	void Write( const TValueType& value ) { std::cout << value; }
+	void Write( const TValueType& value ) {
+		if (m_Level < sm_LogLevel)
+			return;
+
+		std::cout << value;
+	}
 
 	const PR_PRISM_LOG_LEVEL		m_Level;
 };

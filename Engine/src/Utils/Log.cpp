@@ -11,6 +11,7 @@ bool PR_CLogger::HandleAssert( char* file, int line, char* msg ) {
 	return false;
 }
 
+PR_PRISM_LOG_LEVEL PR_CLogger::sm_LogLevel = PR_LOG_LEVEL_LOW;
 //--------------------------------------------------- Logger
 
 /**	Constructor

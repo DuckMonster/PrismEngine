@@ -21,7 +21,7 @@ void PR_CRenderer::Render( PR_CRenderScene& scene ) {
 				PR_CRenderScene::SMeshNode* meshNode = (PR_CRenderScene::SMeshNode*)node;
 
 				// Setup shader
-				PR_CShaderAsset* shader = meshNode->m_Material->GetShader( );
+				PR_CShaderResource* shader = meshNode->m_Material->GetShader( );
 
 				shader->Use( );
 				shader->Set( "u_Camera", scene.GetCameraMatrix( ) );
