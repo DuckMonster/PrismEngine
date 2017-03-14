@@ -5,7 +5,8 @@
 
 # Prism-specific rules
 Engine/lib/
-Engine/tests/
+Engine/tests/Main/Debug/
+Engine/tests/Main/Release/
 
 # User-specific files
 *.suo

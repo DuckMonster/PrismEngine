@@ -3,29 +3,27 @@
 #include <glm/vec2.hpp>
 #include <Prism/IProgram.h>
 
-namespace prism {
-	class CContext {
-	public:
-		static CContext* Instance( );
-		static CContext* Create( const sf::VideoMode& videoMode, const char* title, const sf::ContextSettings& settings );
-		static const std::string& GetWorkingDirectory( );
+class PR_CContext {
+public:
+	static PR_CContext* Instance( );
+	static PR_CContext* Create( const sf::VideoMode& videoMode, const char* title, const sf::ContextSettings& settings );
+	static const std::string& GetWorkingDirectory( );
 
-	private:
-		static CContext*	sm_instance;
-		static std::string	sm_workDir;
+private:
+	static PR_CContext*	sm_instance;
+	static std::string	sm_workDir;
 
-	protected:
-		CContext( );
+protected:
+	PR_CContext( );
 
-	public:
-		void Run( IProgram& program );
-		glm::ivec2 GetWindowSize( );
-		glm::ivec2 GetContextSize( );
+public:
+	void Run( PR_IProgram& program );
+	glm::ivec2 GetWindowSize( );
+	glm::ivec2 GetContextSize( );
 
-	private:
-		void CreateWindow( const sf::VideoMode& videoMode, const char* title, const sf::ContextSettings& settings );
+private:
+	void CreateWindow( const sf::VideoMode& videoMode, const char* title, const sf::ContextSettings& settings );
 
-	private:
-		sf::Window*		m_Window;
-	};
-}
+private:
+	sf::Window*		m_Window;
+};

@@ -1,22 +1,21 @@
 #include <Prism\Render\RenderScene.h>
-using namespace prism;
 
 /**	Constructor
 *******************************************************************************/
-CRenderScene::CRenderScene( ) :
+PR_CRenderScene::PR_CRenderScene( ) :
 	m_CameraMatrix( 1.f ),
 	m_RootNode( NULL ), m_LastNode( NULL ) {
 }
 
 /**	Destructor
 *******************************************************************************/
-CRenderScene::~CRenderScene( ) {
+PR_CRenderScene::~PR_CRenderScene( ) {
 	Clear( );
 }
 
 /**	Clear
 *******************************************************************************/
-void CRenderScene::Clear( ) {
+void PR_CRenderScene::Clear( ) {
 	SNode* ptr = m_RootNode;
 	while (ptr) {
 		SNode* next = ptr->m_Next;
@@ -31,11 +30,11 @@ void CRenderScene::Clear( ) {
 
 /**	Add Mesh
 *******************************************************************************/
-void CRenderScene::AddMesh( CMeshAsset& mesh, CShaderAsset& shader, glm::mat4& transform ) {
+void PR_CRenderScene::AddMesh( PR_CMeshAsset* mesh, PR_CMaterial* material, glm::mat4& transform ) {
 	SMeshNode* meshNode = new SMeshNode;
 
-	meshNode->m_Mesh		= &mesh;
-	meshNode->m_Shader		= &shader;
+	meshNode->m_Mesh		= mesh;
+	meshNode->m_Material	= material;
 	meshNode->m_Transform	= transform;
 
 	AddNode( meshNode );
@@ -43,9 +42,9 @@ void CRenderScene::AddMesh( CMeshAsset& mesh, CShaderAsset& shader, glm::mat4& t
 
 /**	Add Node
 *******************************************************************************/
-void CRenderScene::AddNode( SNode * node ) {
+void PR_CRenderScene::AddNode( SNode * node ) {
 	// This is the first node
-	if (m_RootNode==NULL) {
+	if (m_RootNode == NULL) {
 		m_RootNode = node;
 	}
 

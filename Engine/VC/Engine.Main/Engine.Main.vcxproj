@@ -27,6 +27,12 @@
     <ClInclude Include="Program.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\tests\Main\Assets\test_shader.frag" />
+    <None Include="..\..\tests\Main\Assets\test_shader.vert" />
+    <None Include="..\..\tests\Main\Assets\UnitCube.fbx" />
+    <None Include="..\..\tests\Main\Assets\UnitPlane.fbx" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C670FB97-5094-4F87-A4D4-1A62125B980E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

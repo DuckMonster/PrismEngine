@@ -99,8 +99,10 @@
     <ClInclude Include="..\..\include\Prism\Asset\ShaderAsset.h" />
     <ClInclude Include="..\..\include\Prism\Context.h" />
     <ClInclude Include="..\..\include\Prism\IProgram.h" />
+    <ClInclude Include="..\..\include\Prism\Render\Material.h" />
     <ClInclude Include="..\..\include\Prism\Render\Renderer.h" />
     <ClInclude Include="..\..\include\Prism\Render\RenderScene.h" />
+    <ClInclude Include="..\..\include\Prism\Utils\DirLight.h" />
     <ClInclude Include="..\..\include\Prism\Utils\Log.h" />
   </ItemGroup>
   <ItemGroup>
@@ -108,8 +110,10 @@
     <ClCompile Include="..\..\src\Asset\MeshAsset.cpp" />
     <ClCompile Include="..\..\src\Asset\ShaderAsset.cpp" />
     <ClCompile Include="..\..\src\Context.cpp" />
+    <ClCompile Include="..\..\src\Render\Material.cpp" />
     <ClCompile Include="..\..\src\Render\Renderer.cpp" />
     <ClCompile Include="..\..\src\Render\RenderScene.cpp" />
+    <ClCompile Include="..\..\src\Utils\DirLight.cpp" />
     <ClCompile Include="..\..\src\Utils\Log.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

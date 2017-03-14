@@ -4,7 +4,9 @@
 #include <Prism/Asset/ShaderAsset.h>
 #include <Prism/Render/Renderer.h>
 
-class CProgram : public prism::IProgram {
+/**	CProgram
+*******************************************************************************/
+class CProgram : public PR_IProgram {
 public:
 	CProgram( );
 
@@ -13,7 +15,12 @@ public:
 	void Render( double delta ) override;
 
 private:
-	prism::CShaderAsset*	m_shader;
-	prism::CMeshAsset*		m_mesh;
-	prism::CRenderer		m_renderer;
+	PR_CShaderAsset*	m_shader;
+
+	PR_CMaterial		m_Material;
+	PR_CMaterial		m_GroundMaterial;
+
+	PR_CMeshAsset*		m_mesh;
+	PR_CMeshAsset*		m_plane;
+	PR_CRenderer		m_renderer;
 };

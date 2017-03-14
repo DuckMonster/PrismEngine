@@ -2,21 +2,19 @@
 #include <GL/glew.h>
 #include <chrono>
 
-using namespace prism;
-
 //--------------------------------------------------- Instance
-CContext* CContext::Instance( ) {
+PR_CContext* PR_CContext::Instance( ) {
 	return sm_instance;
 }
 
-CContext* CContext::Create( const sf::VideoMode& videoMode, const char* title, const sf::ContextSettings& settings ) {
-	sm_instance = new CContext;
+PR_CContext* PR_CContext::Create( const sf::VideoMode& videoMode, const char* title, const sf::ContextSettings& settings ) {
+	sm_instance = new PR_CContext;
 	sm_instance->CreateWindow( videoMode, title, settings );
 
 	return sm_instance;
 }
 
-const std::string& CContext::GetWorkingDirectory( ) {
+const std::string& PR_CContext::GetWorkingDirectory( ) {
 	// Fetch working directory
 	if (sm_workDir.empty( )) {
 		char dirBuf[1024];
@@ -26,25 +24,25 @@ const std::string& CContext::GetWorkingDirectory( ) {
 	return sm_workDir;
 }
 
-CContext* CContext::sm_instance = NULL;
-std::string CContext::sm_workDir = "";
+PR_CContext* PR_CContext::sm_instance = NULL;
+std::string PR_CContext::sm_workDir = "";
 //---------------------------------------------------
 
 /**	Constructor
 *******************************************************************************/
-CContext::CContext( ) {
+PR_CContext::PR_CContext( ) {
 }
 
 /**	Create window
 *******************************************************************************/
-void CContext::CreateWindow( const sf::VideoMode& videoMode, const char* title, const sf::ContextSettings& settings ) {
+void PR_CContext::CreateWindow( const sf::VideoMode& videoMode, const char* title, const sf::ContextSettings& settings ) {
 	m_Window = new sf::Window( videoMode, title, sf::Style::Default, settings );
 	glewInit( );
 }
 
 /**	Run
 *******************************************************************************/
-void CContext::Run( IProgram& program ) {
+void PR_CContext::Run( PR_IProgram& program ) {
 	using namespace std::chrono;
 	time_point<high_resolution_clock> point_a = high_resolution_clock::now( );
 
@@ -77,7 +75,7 @@ void CContext::Run( IProgram& program ) {
 
 		program.Update( delta );
 
-		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT );
 		program.Render( delta );
 
 		m_Window->display( );
@@ -86,13 +84,13 @@ void CContext::Run( IProgram& program ) {
 
 /**	Get Window Size
 *******************************************************************************/
-glm::ivec2 CContext::GetWindowSize( ) {
+glm::ivec2 PR_CContext::GetWindowSize( ) {
 	auto windowSize = m_Window->getSize( );
 	return glm::ivec2( windowSize.x, windowSize.y );
 }
 
 /**	Get Context Size
 *******************************************************************************/
-glm::ivec2 prism::CContext::GetContextSize( ) {
+glm::ivec2 PR_CContext::GetContextSize( ) {
 	return GetWindowSize( );
 }

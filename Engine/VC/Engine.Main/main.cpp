@@ -5,6 +5,12 @@
 int main( ) {
 	CProgram program;
 
-	prism::CContext::Create( sf::VideoMode( 1024, 768 ), "PrismTest - Main", sf::ContextSettings( ) );
-	prism::CContext::Instance( )->Run( program );
+	sf::ContextSettings settings;
+
+	settings.depthBits = 24;
+	settings.stencilBits = 8;
+	settings.antialiasingLevel = 8;
+
+	PR_CContext::Create( sf::VideoMode( 1024, 768 ), "PrismTest - Main", settings );
+	PR_CContext::Instance( )->Run( program );
 }

@@ -5,50 +5,62 @@
 #include <glm/glm.hpp>
 #include <iostream>
 #include <vector>
-using namespace prism;
 
-CMeshAsset::CMeshAsset( ) :
-	CAsset( ),
+PR_CMeshAsset::PR_CMeshAsset( ) :
+	PR_CAsset( ),
 	m_objectHandle( -1 ), m_positionHandle( -1 ), m_elementsHandle( -1 ),
 	m_vertexCount( 0 ) {
 
 }
 
-CMeshAsset::~CMeshAsset( ) {
+PR_CMeshAsset::~PR_CMeshAsset( ) {
 
 }
 
-bool CMeshAsset::Load( const std::string& path ) {
+bool PR_CMeshAsset::Load( const std::string& path ) {
 	// Gen buffers
 	glGenVertexArrays( 1, &m_objectHandle );
 	glGenBuffers( 1, &m_positionHandle );
+	glGenBuffers( 1, &m_normalHandle );
+	glGenBuffers( 1, &m_uvHandle );
 	glGenBuffers( 1, &m_elementsHandle );
 
 	// Load mesh data
 	if (!LoadAssimp( path.c_str( ) ))
 		return false;
 
-	// Bind vertex object
+	// Bind vertex objects
 	glBindVertexArray( m_objectHandle );
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_elementsHandle );
+
+
+	glBindBuffer( GL_ARRAY_BUFFER, m_positionHandle );
 	glEnableVertexAttribArray( 0 );
 	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, 0 );
+
+	glBindBuffer( GL_ARRAY_BUFFER, m_normalHandle );
+	glEnableVertexAttribArray( 1 );
+	glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, 0, 0 );
+
+	glBindBuffer( GL_ARRAY_BUFFER, m_uvHandle );
+	glEnableVertexAttribArray( 2 );
+	glVertexAttribPointer( 2, 2, GL_FLOAT, GL_FALSE, 0, 0 );
 
 	glBindVertexArray( 0 );
 
 	return true;
 }
 
-void CMeshAsset::Release( ) {
+void PR_CMeshAsset::Release( ) {
 }
 
-void CMeshAsset::Render( ) {
+void PR_CMeshAsset::Render( ) {
 	glBindVertexArray( m_objectHandle );
 	glDrawElements( GL_TRIANGLES, m_vertexCount, GL_UNSIGNED_INT, 0 );
 	glBindVertexArray( 0 );
 }
 
-bool prism::CMeshAsset::LoadAssimp( const char* fileName ) {
+bool PR_CMeshAsset::LoadAssimp( const char* fileName ) {
 	using namespace std;
 	using namespace glm;
 
@@ -103,6 +115,12 @@ bool prism::CMeshAsset::LoadAssimp( const char* fileName ) {
 	//--------------------------------------------------- Upload all data
 	glBindBuffer( GL_ARRAY_BUFFER, m_positionHandle );
 	glBufferData( GL_ARRAY_BUFFER, sizeof( aiVector3D ) * vertices.size( ), &(vertices[0].x), GL_STATIC_DRAW );
+
+	glBindBuffer( GL_ARRAY_BUFFER, m_normalHandle );
+	glBufferData( GL_ARRAY_BUFFER, sizeof( aiVector3D ) * normals.size( ), &(normals[0].x), GL_STATIC_DRAW );
+
+	glBindBuffer( GL_ARRAY_BUFFER, m_uvHandle );
+	glBufferData( GL_ARRAY_BUFFER, sizeof( aiVector2D ) * uvs.size( ), &(uvs[0].x), GL_STATIC_DRAW );
 
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_elementsHandle );
 	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( size_t ) * vertices.size( ), &(indicies[0]), GL_STATIC_DRAW );

@@ -7,6 +7,9 @@
     <Filter Include="Code\Program">
       <UniqueIdentifier>{a4f818ff-b89e-42ac-b6bb-cba8d0c39b7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{5fefb8a4-fe5b-4d26-bd7d-35fc9f9af57c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -26,5 +29,19 @@
     <ClInclude Include="Program.h">
       <Filter>Code\Program</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\tests\Main\Assets\test_shader.frag">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\..\tests\Main\Assets\test_shader.vert">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\..\tests\Main\Assets\UnitCube.fbx">
+      <Filter>Assets</Filter>
+    </None>
+    <None Include="..\..\tests\Main\Assets\UnitPlane.fbx">
+      <Filter>Assets</Filter>
+    </None>
   </ItemGroup>
 </Project>

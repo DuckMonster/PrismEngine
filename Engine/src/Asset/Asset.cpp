@@ -1,17 +1,16 @@
 #include "Prism/Asset/Asset.h"
-using namespace prism;
 
 //--------------------------------------------------- Manager
 /**	GetAssetDirectory
 *******************************************************************************/
-const std::string CAsset::GetAssetDirectory( ) {
+const std::string PR_CAsset::GetAssetDirectory( ) {
 	return sm_AssetDirectory;
 }
 
 /**	Hash String
 *******************************************************************************/
-unsigned int prism::CAsset::HashString( const char * str ) {
-	unsigned int hash = HASH_SEED;
+unsigned int PR_CAsset::HashString( const char * str ) {
+	unsigned int hash = sm_HashSeed;
 	while (*str) {
 		hash *= 101 + *str;
 		str++;
@@ -20,18 +19,19 @@ unsigned int prism::CAsset::HashString( const char * str ) {
 	return hash;
 }
 
-std::string CAsset::sm_AssetDirectory = "./Assets/";
-std::map<unsigned int, CAsset*> CAsset::sm_AssetMap;
+const unsigned int PR_CAsset::sm_HashSeed = 0xf75ac213;
+std::string PR_CAsset::sm_AssetDirectory = "./Assets/";
+std::map<unsigned int, PR_CAsset*> PR_CAsset::sm_AssetMap;
 //---------------------------------------------------
 
 /**	Constructor
 *******************************************************************************/
-prism::CAsset::CAsset( ) :
+PR_CAsset::PR_CAsset( ) :
 	m_AssetPath( "" ) {
 }
 
 /**	Destructor
 *******************************************************************************/
-prism::CAsset::~CAsset( ) {
+PR_CAsset::~PR_CAsset( ) {
 	Release( );
 }

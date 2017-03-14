@@ -4,19 +4,18 @@
 #include <fstream>
 #include <stdlib.h>
 
-using namespace prism;
 using namespace std;
 
 /**	Constructor
 *******************************************************************************/
-CShaderAsset::CShaderAsset( ) :
-	CAsset( ),
+PR_CShaderAsset::PR_CShaderAsset( ) :
+	PR_CAsset( ),
 	m_shaderHandle( -1 ) {
 }
 
 /**	Destructor
 *******************************************************************************/
-CShaderAsset::~CShaderAsset( ) {
+PR_CShaderAsset::~PR_CShaderAsset( ) {
 }
 
 /**	Load
@@ -48,14 +47,14 @@ CShaderAsset::~CShaderAsset( ) {
 
 /**	Use
 *******************************************************************************/
-void prism::CShaderAsset::Use( ) {
-	PRISM_ASSERT_MSG( m_shaderHandle != -1, "Trying to use an uninitialized shader" );
+void PR_CShaderAsset::Use( ) {
+	PR_ASSERT_MSG( m_shaderHandle != -1, "Trying to use an uninitialized shader" );
 	glUseProgram( m_shaderHandle );
 }
 
 /**	Release
 *******************************************************************************/
-void prism::CShaderAsset::Release( ) {
+void PR_CShaderAsset::Release( ) {
 	// Already released
 	if (m_shaderHandle == -1)
 		return;
@@ -78,7 +77,7 @@ void prism::CShaderAsset::Release( ) {
 
 /**	Load
 *******************************************************************************/
-bool prism::CShaderAsset::Load( const std::string& path ) {
+bool PR_CShaderAsset::Load( const std::string& path ) {
 	string vertFile( path ), fragFile( path );
 	vertFile += ".vert";
 	fragFile += ".frag";
@@ -88,7 +87,7 @@ bool prism::CShaderAsset::Load( const std::string& path ) {
 
 /**	Create shader
 *******************************************************************************/
-bool CShaderAsset::CreateShader( const string& vertFile, const string& fragFile ) {
+bool PR_CShaderAsset::CreateShader( const string& vertFile, const string& fragFile ) {
 	static char s_fileBuffer[1 << 16];
 	static char* s_filePtr = &s_fileBuffer[0];
 

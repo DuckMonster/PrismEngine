@@ -53,6 +53,12 @@
     <ClInclude Include="..\..\include\Prism\Render\Renderer.h">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\Prism\Render\Material.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\Prism\Utils\DirLight.h">
+      <Filter>Header Files\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Context.cpp">
@@ -75,6 +81,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Render\RenderScene.cpp">
       <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Render\Material.cpp">
+      <Filter>Source Files\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Utils\DirLight.cpp">
+      <Filter>Source Files\Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
