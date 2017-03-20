@@ -18,6 +18,10 @@ protected:
 
 public:
 	void Run( PR_IProgram& program );
+
+	size_t GetWindowWidth( ) { return m_Window->getSize( ).x; }
+	size_t GetWindowHeight( ) { return m_Window->getSize( ).y; }
+
 	glm::ivec2 GetWindowSize( );
 	glm::ivec2 GetContextSize( );
 

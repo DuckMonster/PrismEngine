@@ -9,6 +9,9 @@ public:
 	void Bind( unsigned int id );
 	const GLuint& GetHandle( ) { return m_Handle; }
 
+	void SetFilter( GLuint filter );
+	void SetWrapMode( GLuint wrapMode );
+
 protected:
 	bool Load( const std::string& resourcePath ) override;
 	bool Create( ) override;

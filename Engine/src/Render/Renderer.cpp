@@ -9,6 +9,8 @@ PR_CRenderer::PR_CRenderer( ) {
 /**	Render
 *******************************************************************************/
 void PR_CRenderer::Render( PR_CRenderScene& scene ) {
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
 	PR_SDirLight lightSource = scene.GetLight( );
 
 	PR_CRenderScene::SNode* node = NULL;

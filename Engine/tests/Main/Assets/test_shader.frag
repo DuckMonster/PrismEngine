@@ -33,6 +33,6 @@ void main() {
 	}
 
 	o_Color = vec4(u_Material.color.xyz * diffuse, u_Material.color.w);
-	o_Color = vec4(fs_in.uv, 0.0, 1.0);
+	//o_Color = vec4(fs_in.uv, 0.0, 1.0);
 	o_Color = texture(u_Sampler, fs_in.uv);
 }

@@ -28,5 +28,9 @@ private:
 	PR_CRenderer				m_renderer;
 
 	PR_CFramebufferResource*	m_Framebuffer;
-	PR_CTextureResource*		m_FBTexture;
+	PR_CTextureResource*		m_FBColor;
+	PR_CTextureResource*		m_FBNormal;
+	PR_CTextureResource*		m_FBDepth;
+
+	PR_CShaderResource*			m_LightShader;
 };

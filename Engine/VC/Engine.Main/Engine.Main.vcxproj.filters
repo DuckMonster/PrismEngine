@@ -10,6 +10,9 @@
     <Filter Include="Assets">
       <UniqueIdentifier>{5fefb8a4-fe5b-4d26-bd7d-35fc9f9af57c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\Deferred">
+      <UniqueIdentifier>{d83d54ea-9e17-4808-8a6f-f62649e536b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -42,6 +45,18 @@
     </None>
     <None Include="..\..\tests\Main\Assets\UnitPlane.fbx">
       <Filter>Assets</Filter>
+    </None>
+    <None Include="..\..\tests\Main\Assets\Deferred\shdr_deferred_base.frag">
+      <Filter>Assets\Deferred</Filter>
+    </None>
+    <None Include="..\..\tests\Main\Assets\Deferred\shdr_deferred_base.vert">
+      <Filter>Assets\Deferred</Filter>
+    </None>
+    <None Include="..\..\tests\Main\Assets\Deferred\shdr_deferred_light.frag">
+      <Filter>Assets\Deferred</Filter>
+    </None>
+    <None Include="..\..\tests\Main\Assets\Deferred\shdr_deferred_light.vert">
+      <Filter>Assets\Deferred</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -28,6 +28,10 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\tests\Main\Assets\Deferred\shdr_deferred_base.frag" />
+    <None Include="..\..\tests\Main\Assets\Deferred\shdr_deferred_base.vert" />
+    <None Include="..\..\tests\Main\Assets\Deferred\shdr_deferred_light.frag" />
+    <None Include="..\..\tests\Main\Assets\Deferred\shdr_deferred_light.vert" />
     <None Include="..\..\tests\Main\Assets\test_shader.frag" />
     <None Include="..\..\tests\Main\Assets\test_shader.vert" />
     <None Include="..\..\tests\Main\Assets\UnitCube.fbx" />
