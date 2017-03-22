@@ -18,8 +18,10 @@ struct Light {
 uniform Material u_Material;
 uniform Light u_Light;
 
-out vec4 o_Color;
+layout(location = 0) out vec3 o_Color;
+layout(location = 1) out vec3 o_Normal;
 
 void main() {
-	o_Color = vec4(fs_in.world, 1.0);
+	o_Color = fs_in.world;
+	o_Normal = fs_in.normal;
 }

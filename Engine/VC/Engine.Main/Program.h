@@ -5,6 +5,8 @@
 #include <Prism/Resource/TextureResource.h>
 #include <Prism/Resource/FramebufferResource.h>
 #include <Prism/Render/Renderer.h>
+#include <Prism/Render/DeferredRenderer.h>
+#include <Prism/Render/ShadowMapRenderer.h>
 
 /**	CProgram
 *******************************************************************************/
@@ -24,13 +26,11 @@ private:
 
 	PR_CMeshResource*			m_mesh;
 	PR_CMeshResource*			m_plane;
+	PR_CMeshResource*			m_Car;
 	PR_CTextureResource*		m_Texture;
-	PR_CRenderer				m_renderer;
-
-	PR_CFramebufferResource*	m_Framebuffer;
-	PR_CTextureResource*		m_FBColor;
-	PR_CTextureResource*		m_FBNormal;
-	PR_CTextureResource*		m_FBDepth;
+	PR_CRenderer				m_Renderer;
+	PR_CDeferredRenderer		m_DeferredRenderer;
+	PR_CShadowMapRenderer		m_ShadowRenderer;
 
 	PR_CShaderResource*			m_LightShader;
 };

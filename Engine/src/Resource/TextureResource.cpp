@@ -13,6 +13,7 @@ PR_CTextureResource::PR_CTextureResource( ) :
 void PR_CTextureResource::Bind( unsigned int id ) {
 	PR_ASSERT_MSG( m_Handle != -1, "Texture isn't created" );
 	glActiveTexture( GL_TEXTURE0 + id );
+	glEnable( GL_TEXTURE_2D );
 	glBindTexture( GL_TEXTURE_2D, m_Handle );
 }
 

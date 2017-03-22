@@ -96,9 +96,11 @@
   <ItemGroup>
     <ClInclude Include="..\..\include\Prism\Context.h" />
     <ClInclude Include="..\..\include\Prism\IProgram.h" />
+    <ClInclude Include="..\..\include\Prism\Render\DeferredRenderer.h" />
     <ClInclude Include="..\..\include\Prism\Render\Material.h" />
     <ClInclude Include="..\..\include\Prism\Render\Renderer.h" />
     <ClInclude Include="..\..\include\Prism\Render\RenderScene.h" />
+    <ClInclude Include="..\..\include\Prism\Render\ShadowMapRenderer.h" />
     <ClInclude Include="..\..\include\Prism\Resource\FramebufferResource.h" />
     <ClInclude Include="..\..\include\Prism\Resource\MeshResource.h" />
     <ClInclude Include="..\..\include\Prism\Resource\Resource.h" />
@@ -110,9 +112,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Context.cpp" />
+    <ClCompile Include="..\..\src\Render\DeferredRenderer.cpp" />
     <ClCompile Include="..\..\src\Render\Material.cpp" />
     <ClCompile Include="..\..\src\Render\Renderer.cpp" />
     <ClCompile Include="..\..\src\Render\RenderScene.cpp" />
+    <ClCompile Include="..\..\src\Render\ShadowMapRenderer.cpp" />
     <ClCompile Include="..\..\src\Resource\FramebufferResource.cpp" />
     <ClCompile Include="..\..\src\Resource\Resource.cpp" />
     <ClCompile Include="..\..\src\Resource\MeshResource.cpp" />

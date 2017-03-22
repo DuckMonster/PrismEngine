@@ -25,6 +25,8 @@ protected:
 	void Delete( ) override;
 
 private:
+	std::vector<GLenum> m_ColorBuffers;
+
 	GLuint		m_Handle;
 	size_t		m_Width;
 	size_t		m_Height;

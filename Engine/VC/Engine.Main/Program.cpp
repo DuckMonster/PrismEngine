@@ -13,34 +13,23 @@ CProgram::CProgram( ) {
 /**	Init
 *******************************************************************************/
 void CProgram::Init( ) {
+	PR_CLogger::sm_LogLevel = PR_LOG_LEVEL_TRIVIAL;
+
 	m_Shader	= PR_CResource::Load<PR_CShaderResource>( "Deferred/shdr_deferred_base" );
 	m_mesh		= PR_CResource::Load<PR_CMeshResource>( "UnitCube.fbx" );
 	m_plane		= PR_CResource::Load<PR_CMeshResource>( "UnitPlane.fbx" );
 	m_Texture	= PR_CResource::Load<PR_CTextureResource>( "sample.png" );
+	m_Car		= PR_CResource::Load<PR_CMeshResource>( "Car.fbx" );
 
 	m_LightShader = PR_CResource::Load<PR_CShaderResource>( "Deferred/shdr_deferred_light" );
 	m_LightShader->Set( "u_Deferred.position", 0 );
 	m_LightShader->Set( "u_Deferred.normal", 1 );
-	m_LightShader->Set( "u_Deferred.depth", 2 );
-
-	m_Framebuffer	= PR_CResource::Create<PR_CFramebufferResource>( );
-	m_FBColor		= PR_CResource::Create<PR_CTextureResource>( );
-	m_FBNormal		= PR_CResource::Create<PR_CTextureResource>( );
-	m_FBDepth		= PR_CResource::Create<PR_CTextureResource>( );
-
-	m_Framebuffer->SetResolution( PR_CContext::Instance( )->GetWindowWidth( ), PR_CContext::Instance( )->GetWindowHeight( ) );
-	m_Framebuffer->BindTextureColor( m_FBColor, 0, GL_RGB, GL_UNSIGNED_BYTE );
-	m_Framebuffer->BindTextureColor( m_FBNormal, 1, GL_RGB16F, GL_FLOAT );
-	m_Framebuffer->BindTextureDepth( m_FBDepth );
-
-	PR_ASSERT( m_Framebuffer->IsComplete( ) );
-	if (!m_Framebuffer->IsComplete( ))
-		std::cout << "Hello!\n";
-
-	m_FBColor->SetFilter( GL_NEAREST );
-	m_FBDepth->SetFilter( GL_NEAREST );
+	m_LightShader->Set( "u_Deferred.diffuse", 2 );
+	m_LightShader->Set( "u_Deferred.depth", 3 );
+	m_LightShader->Set( "u_Deferred.shadow", 4 );
 
 	m_Material.SetShader( m_Shader );
+	m_Material.SetTexture( m_Texture );
 	m_Material.SetColor( glm::vec4( 1.f, 0.f, 0.f, 1.f ) );
 
 	m_GroundMaterial = m_Material;
@@ -66,7 +55,7 @@ void CProgram::Render( double delta ) {
 	PR_CRenderScene scene;
 
 	glm::mat4 camera = glm::ortho( -5.f * contextRatio, 5.f * contextRatio, -5.f, 5.f, 0.f, 100.f )
-		* glm::lookAt( glm::vec3( 5.f, 5.f, 5.f ), glm::vec3( 0.f ), glm::vec3( 0.f, 1.f, 0.f ) );
+		* glm::lookAt( glm::vec3( glm::sin( t * 0.2f ), 1.f, glm::cos( t * 0.2f ) ) * 5.f, glm::vec3( 0.f ), glm::vec3( 0.f, 1.f, 0.f ) );
 
 	PR_SDirLight light;
 	light.m_Position = glm::vec3( 5.f, 5.f, -5.f );
@@ -82,7 +71,7 @@ void CProgram::Render( double delta ) {
 	//world = glm::rotate( world, t, glm::vec3( 0.f, 0.f, 1.f ) );
 	scene.AddMesh( m_mesh, &m_Material, world );
 
-	world = glm::translate( glm::mat4( 1.f ), glm::vec3( -1.5, 0.f, 0.f ) );
+	world = glm::translate( glm::mat4( 1.f ), glm::vec3( -1.5f, 0.5f, 0.f ) );
 	world = glm::rotate( world, t, glm::vec3( 0.f, 1.f, 0.f ) );
 	scene.AddMesh( m_mesh, &m_Material, world );
 
@@ -90,9 +79,9 @@ void CProgram::Render( double delta ) {
 	world = glm::scale( world, glm::vec3( 100.f ) );
 	scene.AddMesh( m_plane, &m_GroundMaterial, world );
 
-	m_Texture->Bind( 0 );
-	m_Framebuffer->Bind( );
-	m_renderer.Render( scene );
+	m_DeferredRenderer.Render( scene );
+	m_Renderer.Render( scene );
+	m_ShadowRenderer.Render( scene );
 
 	PR_CFramebufferResource::Release( );
 
@@ -112,13 +101,21 @@ void CProgram::Render( double delta ) {
 		(right + left) / 2.f, (bottom + top) / 2.f, 0.f, 1.f
 	);
 
-	/*m_LightShader->Use( );
-	m_FBColor->Bind( 0 );
-	m_FBDepth->Bind( 1 );
-	glDrawArrays( GL_QUADS, 0, 4 );*/
+	PR_SGBuffer& gBuffer = m_DeferredRenderer.GetGBuffer( );
 
-	GetQuadShader( )->Use( );
-	GetQuadShader( )->Set( "u_QuadMatrix", glm::mat4( 1.f ) ); // quadMatrix )
-	m_FBColor->Bind( 0 );
+	gBuffer.Position->Bind( 0 );
+	gBuffer.Normal->Bind( 1 );
+	gBuffer.Diffuse->Bind( 2 );
+	gBuffer.Depth->Bind( 3 );
+	m_ShadowRenderer.GetShadowTexture( )->Bind( 4 );
+
+	m_LightShader->Use( );
+	m_LightShader->Set( "u_Light.direction", light.m_Direction );
+
 	glDrawArrays( GL_QUADS, 0, 4 );
+
+	//GetQuadShader( )->Use( );
+	//GetQuadShader( )->Set( "u_QuadMatrix", glm::mat4( 1.f ) ); // quadMatrix )
+	//m_ShadowRenderer.GetShadowTexture( )->Bind( 0 );
+	//glDrawArrays( GL_QUADS, 0, 4 );
 }

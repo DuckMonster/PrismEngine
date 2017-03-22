@@ -3,7 +3,7 @@
 /**	Constructor
 *******************************************************************************/
 PR_CMaterial::PR_CMaterial( ) :
-	m_Shader( NULL ), m_Color( 1.f ) {
+	m_Shader( NULL ), m_Texture( NULL ), m_Color( 1.f ) {
 }
 
 /**	Destructor
