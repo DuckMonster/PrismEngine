@@ -29,7 +29,7 @@ namespace {
 		"}";
 }
 
-PR_CShaderResource* GetQuadShader( ) {
+PR_CShaderResource* PR_QuadShader( ) {
 	static PR_CShaderResource* SHADER = NULL;
 
 	// Compile

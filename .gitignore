@@ -7,6 +7,8 @@
 Engine/lib/
 Engine/tests/Main/Debug/
 Engine/tests/Main/Release/
+Engine/tests/SphericalHarmonics/Debug/
+Engine/tests/SphericalHarmonics/Release/
 
 # User-specific files
 *.suo

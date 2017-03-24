@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Code">
+      <UniqueIdentifier>{2765fb30-743e-44c2-9c8e-c6afe41be6de}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Program.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="SH.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Program.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="SH.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\tests\SphericalHarmonics\Assets\shdr_reflection.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\tests\SphericalHarmonics\Assets\shdr_skybox.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\tests\SphericalHarmonics\Assets\shdr_skybox.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\tests\SphericalHarmonics\Assets\shdr_reflection.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\tests\SphericalHarmonics\Assets\shdr_samples.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\tests\SphericalHarmonics\Assets\shdr_samples.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

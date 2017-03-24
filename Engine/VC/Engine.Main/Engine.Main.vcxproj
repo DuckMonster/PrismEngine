@@ -19,21 +19,27 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="LightRenderer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="TestPosteffect.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="LightRenderer.h" />
     <ClInclude Include="Program.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TestPosteffect.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\tests\Main\Assets\Deferred\shdr_deferred_base.frag" />
-    <None Include="..\..\tests\Main\Assets\Deferred\shdr_deferred_base.vert" />
-    <None Include="..\..\tests\Main\Assets\Deferred\shdr_deferred_light.frag" />
-    <None Include="..\..\tests\Main\Assets\Deferred\shdr_deferred_light.vert" />
-    <None Include="..\..\tests\Main\Assets\test_shader.frag" />
-    <None Include="..\..\tests\Main\Assets\test_shader.vert" />
+    <None Include="..\..\tests\Main\Assets\Shader\Deferred\shdr_deferred_base.frag" />
+    <None Include="..\..\tests\Main\Assets\Shader\Deferred\shdr_deferred_base.vert" />
+    <None Include="..\..\tests\Main\Assets\Shader\Deferred\shdr_deferred_light.frag" />
+    <None Include="..\..\tests\Main\Assets\Shader\Deferred\shdr_deferred_light.vert" />
+    <None Include="..\..\tests\Main\Assets\Shader\Post\shdr_post_test.frag" />
+    <None Include="..\..\tests\Main\Assets\Shader\Post\shdr_post_test.vert" />
+    <None Include="..\..\tests\Main\Assets\Shader\test_shader.frag" />
+    <None Include="..\..\tests\Main\Assets\Shader\test_shader.vert" />
     <None Include="..\..\tests\Main\Assets\UnitCube.fbx" />
     <None Include="..\..\tests\Main\Assets\UnitPlane.fbx" />
   </ItemGroup>
@@ -142,7 +148,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>GLEW_STATIC;SFML_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(PrismDir)include;$(PrismDir).dependency\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PrismDir)include;$(PrismDir).dependency\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

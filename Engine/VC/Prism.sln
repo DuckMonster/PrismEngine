@@ -10,28 +10,49 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine.Main", "Engine.Main\
 		{874C699B-4F8F-4140-AF0C-16DB3AE4C086} = {874C699B-4F8F-4140-AF0C-16DB3AE4C086}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine.SphericalHarmonics", "Engine.SphericalHarmonics\Engine.SphericalHarmonics.vcxproj", "{BB89ABB0-AB2F-47BF-9485-BD7CF407C31E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{874C699B-4F8F-4140-AF0C-16DB3AE4C086} = {874C699B-4F8F-4140-AF0C-16DB3AE4C086}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{874C699B-4F8F-4140-AF0C-16DB3AE4C086}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{874C699B-4F8F-4140-AF0C-16DB3AE4C086}.Debug|x64.ActiveCfg = Debug|Win32
 		{874C699B-4F8F-4140-AF0C-16DB3AE4C086}.Debug|x86.ActiveCfg = Debug|Win32
 		{874C699B-4F8F-4140-AF0C-16DB3AE4C086}.Debug|x86.Build.0 = Debug|Win32
+		{874C699B-4F8F-4140-AF0C-16DB3AE4C086}.Release|Any CPU.ActiveCfg = Release|Win32
 		{874C699B-4F8F-4140-AF0C-16DB3AE4C086}.Release|x64.ActiveCfg = Release|Win32
 		{874C699B-4F8F-4140-AF0C-16DB3AE4C086}.Release|x86.ActiveCfg = Release|Win32
 		{874C699B-4F8F-4140-AF0C-16DB3AE4C086}.Release|x86.Build.0 = Release|Win32
+		{C670FB97-5094-4F87-A4D4-1A62125B980E}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{C670FB97-5094-4F87-A4D4-1A62125B980E}.Debug|x64.ActiveCfg = Debug|x64
 		{C670FB97-5094-4F87-A4D4-1A62125B980E}.Debug|x64.Build.0 = Debug|x64
 		{C670FB97-5094-4F87-A4D4-1A62125B980E}.Debug|x86.ActiveCfg = Debug|Win32
 		{C670FB97-5094-4F87-A4D4-1A62125B980E}.Debug|x86.Build.0 = Debug|Win32
+		{C670FB97-5094-4F87-A4D4-1A62125B980E}.Release|Any CPU.ActiveCfg = Release|Win32
 		{C670FB97-5094-4F87-A4D4-1A62125B980E}.Release|x64.ActiveCfg = Release|x64
 		{C670FB97-5094-4F87-A4D4-1A62125B980E}.Release|x64.Build.0 = Release|x64
 		{C670FB97-5094-4F87-A4D4-1A62125B980E}.Release|x86.ActiveCfg = Release|Win32
 		{C670FB97-5094-4F87-A4D4-1A62125B980E}.Release|x86.Build.0 = Release|Win32
+		{BB89ABB0-AB2F-47BF-9485-BD7CF407C31E}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{BB89ABB0-AB2F-47BF-9485-BD7CF407C31E}.Debug|x64.ActiveCfg = Debug|x64
+		{BB89ABB0-AB2F-47BF-9485-BD7CF407C31E}.Debug|x64.Build.0 = Debug|x64
+		{BB89ABB0-AB2F-47BF-9485-BD7CF407C31E}.Debug|x86.ActiveCfg = Debug|Win32
+		{BB89ABB0-AB2F-47BF-9485-BD7CF407C31E}.Debug|x86.Build.0 = Debug|Win32
+		{BB89ABB0-AB2F-47BF-9485-BD7CF407C31E}.Release|Any CPU.ActiveCfg = Release|Win32
+		{BB89ABB0-AB2F-47BF-9485-BD7CF407C31E}.Release|x64.ActiveCfg = Release|x64
+		{BB89ABB0-AB2F-47BF-9485-BD7CF407C31E}.Release|x64.Build.0 = Release|x64
+		{BB89ABB0-AB2F-47BF-9485-BD7CF407C31E}.Release|x86.ActiveCfg = Release|Win32
+		{BB89ABB0-AB2F-47BF-9485-BD7CF407C31E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

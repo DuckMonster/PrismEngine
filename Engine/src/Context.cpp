@@ -1,6 +1,7 @@
 #include <Prism/Context.h>
 #include <GL/glew.h>
 #include <chrono>
+#include <iostream>
 
 //--------------------------------------------------- Instance
 PR_CContext* PR_CContext::Instance( ) {

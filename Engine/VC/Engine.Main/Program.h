@@ -7,6 +7,9 @@
 #include <Prism/Render/Renderer.h>
 #include <Prism/Render/DeferredRenderer.h>
 #include <Prism/Render/ShadowMapRenderer.h>
+#include <Prism/Render/PostEffect/FXAA.h>
+#include "LightRenderer.h"
+#include "TestPosteffect.h"
 
 /**	CProgram
 *******************************************************************************/
@@ -32,5 +35,7 @@ private:
 	PR_CDeferredRenderer		m_DeferredRenderer;
 	PR_CShadowMapRenderer		m_ShadowRenderer;
 
-	PR_CShaderResource*			m_LightShader;
+	CLightRenderer				m_LightRenderer;
+	CTestPosteffect				m_TestPosteffect;
+	PR_CFXAA					m_FXAA;
 };

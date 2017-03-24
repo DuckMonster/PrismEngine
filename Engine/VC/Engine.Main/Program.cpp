@@ -4,6 +4,7 @@
 #include <Prism/Context.h>
 #include <Prism/Utils/DirLight.h>
 #include <Prism/Utils/DefaultShader.h>
+#include <Prism/Utils/RenderUtils.h>
 
 /**	Constructor
 *******************************************************************************/
@@ -15,18 +16,10 @@ CProgram::CProgram( ) {
 void CProgram::Init( ) {
 	PR_CLogger::sm_LogLevel = PR_LOG_LEVEL_TRIVIAL;
 
-	m_Shader	= PR_CResource::Load<PR_CShaderResource>( "Deferred/shdr_deferred_base" );
+	m_Shader	= PR_CResource::Load<PR_CShaderResource>( "Shader/Deferred/shdr_deferred_base" );
 	m_mesh		= PR_CResource::Load<PR_CMeshResource>( "UnitCube.fbx" );
 	m_plane		= PR_CResource::Load<PR_CMeshResource>( "UnitPlane.fbx" );
 	m_Texture	= PR_CResource::Load<PR_CTextureResource>( "sample.png" );
-	m_Car		= PR_CResource::Load<PR_CMeshResource>( "Car.fbx" );
-
-	m_LightShader = PR_CResource::Load<PR_CShaderResource>( "Deferred/shdr_deferred_light" );
-	m_LightShader->Set( "u_Deferred.position", 0 );
-	m_LightShader->Set( "u_Deferred.normal", 1 );
-	m_LightShader->Set( "u_Deferred.diffuse", 2 );
-	m_LightShader->Set( "u_Deferred.depth", 3 );
-	m_LightShader->Set( "u_Deferred.shadow", 4 );
 
 	m_Material.SetShader( m_Shader );
 	m_Material.SetTexture( m_Texture );
@@ -102,17 +95,13 @@ void CProgram::Render( double delta ) {
 	);
 
 	PR_SGBuffer& gBuffer = m_DeferredRenderer.GetGBuffer( );
+	PR_CTextureResource* lightResult = m_LightRenderer.ApplyTo( scene, gBuffer, m_ShadowRenderer.GetShadowTexture( ) );
+	PR_CTextureResource* postResult = lightResult;// m_TestPosteffect.ApplyTo( lightResult );
 
-	gBuffer.Position->Bind( 0 );
-	gBuffer.Normal->Bind( 1 );
-	gBuffer.Diffuse->Bind( 2 );
-	gBuffer.Depth->Bind( 3 );
-	m_ShadowRenderer.GetShadowTexture( )->Bind( 4 );
+	if (!sf::Keyboard::isKeyPressed( sf::Keyboard::Space ))
+		postResult = m_FXAA.ApplyTo( lightResult );
 
-	m_LightShader->Use( );
-	m_LightShader->Set( "u_Light.direction", light.m_Direction );
-
-	glDrawArrays( GL_QUADS, 0, 4 );
+	PR_RenderTexture( postResult );
 
 	//GetQuadShader( )->Use( );
 	//GetQuadShader( )->Set( "u_QuadMatrix", glm::mat4( 1.f ) ); // quadMatrix )

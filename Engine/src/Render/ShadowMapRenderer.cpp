@@ -166,7 +166,6 @@ void PR_CShadowMapRenderer::LoadResources( ) {
 	m_DepthFramebuffer	= PR_CResource::Create<PR_CFramebufferResource>( );
 	m_DepthTexture		= PR_CResource::Create<PR_CTextureResource>( );
 
-	m_DepthTexture->SetFilter( GL_NEAREST );
 	m_DepthFramebuffer->SetResolution( 2048, 2048 );
 	m_DepthFramebuffer->BindTextureDepth( m_DepthTexture );
 
@@ -179,7 +178,6 @@ void PR_CShadowMapRenderer::LoadResources( ) {
 	m_ShadowTexture		= PR_CResource::Create<PR_CTextureResource>( );
 	m_ShadowDepthTexture= PR_CResource::Create<PR_CTextureResource>( );
 
-	m_ShadowTexture->SetFilter( GL_NEAREST );
 	m_ShadowFramebuffer->SetResolution( PR_CContext::Instance( )->GetWindowWidth( ), PR_CContext::Instance( )->GetWindowHeight( ) );
 	m_ShadowFramebuffer->BindTextureColor( m_ShadowTexture, 0, GL_RED, GL_UNSIGNED_BYTE );
 	m_ShadowFramebuffer->BindTextureDepth( m_ShadowDepthTexture );

@@ -118,7 +118,7 @@ bool PR_CMeshResource::LoadAssimp( const char* fileName ) {
 
 	// Create importer
 	Assimp::Importer importer;
-	const aiScene* scene = importer.ReadFile( fileName, aiProcess_Triangulate );
+	const aiScene* scene = importer.ReadFile( fileName, aiProcess_OptimizeMeshes );
 	if (!scene) {
 		cout << "Failed to load " << fileName << ": " << importer.GetErrorString( ) << "\n";
 		return false;
@@ -135,19 +135,28 @@ bool PR_CMeshResource::LoadAssimp( const char* fileName ) {
 	for (size_t m = 0; m < scene->mNumMeshes; m++) {
 		aiMesh* fbxMesh = scene->mMeshes[m];
 
+		size_t vertexNum = fbxMesh->mNumVertices;
+		size_t indexNum = fbxMesh->mNumFaces * 3;
+
+		aiVector3D* mVertArr = new aiVector3D[vertexNum];
+		aiVector3D* mNormalArr = new aiVector3D[vertexNum];
+		aiVector2D* mUVArr = new aiVector2D[vertexNum];
+		size_t* mIndexArr = new size_t[indexNum];
+
 		for (size_t i = 0; i < fbxMesh->mNumVertices; i++) {
-			// Position
-			vertices.push_back( fbxMesh->mVertices[i] );
+			mVertArr[i] = fbxMesh->mVertices[i];
 
-			// Normal
-			if (fbxMesh->HasNormals( ))
-				normals.push_back( fbxMesh->mNormals[i] );
+			if (fbxMesh->mNormals != NULL)
+				mNormalArr[i] = fbxMesh->mNormals[i];
+			else
+				mNormalArr[i] = aiVector3D( 0 );
 
-			// UV
-			if (fbxMesh->HasTextureCoords( 0 )) {
-				aiVector3D v = fbxMesh->mTextureCoords[0][i];
-				uvs.push_back( aiVector2D( v.x, v.y ) );
+			if (fbxMesh->mTextureCoords[0] != NULL) {
+				aiVector3D uv = fbxMesh->mTextureCoords[0][i];
+				mUVArr[i] = aiVector2D( uv.x, uv.y );
 			}
+			else
+				mUVArr[i] = aiVector2D( 0 );
 		}
 
 		// Indicies
@@ -155,11 +164,16 @@ bool PR_CMeshResource::LoadAssimp( const char* fileName ) {
 			aiFace face = fbxMesh->mFaces[f];
 
 			for (size_t i = 0; i < face.mNumIndices; i++) {
-				indicies.push_back( face.mIndices[i] + elem_offset );
+				mIndexArr[f * 3 + i] = face.mIndices[i] + elem_offset;
 			}
 		}
 
 		elem_offset += fbxMesh->mNumVertices;
+
+		vertices.insert( vertices.end( ), mVertArr, mVertArr + vertexNum );
+		normals.insert( normals.end( ), mNormalArr, mNormalArr + vertexNum );
+		uvs.insert( uvs.end( ), mUVArr, mUVArr + vertexNum );
+		indicies.insert(indicies.end(), mIndexArr, mIndexArr + indexNum);
 	}
 
 	glBindVertexArray( 0 );
@@ -175,7 +189,7 @@ bool PR_CMeshResource::LoadAssimp( const char* fileName ) {
 	glBufferData( GL_ARRAY_BUFFER, sizeof( aiVector2D ) * uvs.size( ), &(uvs[0].x), GL_STATIC_DRAW );
 
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_elementsHandle );
-	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( size_t ) * vertices.size( ), &(indicies[0]), GL_STATIC_DRAW );
+	glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof( size_t ) * indicies.size( ), &(indicies[0]), GL_STATIC_DRAW );
 
 	m_vertexCount = indicies.size( );
 

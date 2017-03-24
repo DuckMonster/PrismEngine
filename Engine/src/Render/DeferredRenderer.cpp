@@ -115,9 +115,9 @@ void PR_CDeferredRenderer::LoadResources( ) {
 	m_GBuffer.Diffuse	= PR_CResource::Create<PR_CTextureResource>( );
 	m_GBuffer.Depth		= PR_CResource::Create<PR_CTextureResource>( );
 
-	m_GBuffer.Position->SetFilter( GL_NEAREST );
-	m_GBuffer.Normal->SetFilter( GL_NEAREST );
-	m_GBuffer.Diffuse->SetFilter( GL_NEAREST );
+	//m_GBuffer.Position->SetFilter( GL_NEAREST );
+	//m_GBuffer.Normal->SetFilter( GL_NEAREST );
+	//m_GBuffer.Diffuse->SetFilter( GL_NEAREST );
 
 	m_Framebuffer->SetResolution( PR_CContext::Instance( )->GetWindowWidth( ), PR_CContext::Instance( )->GetWindowHeight( ) );
 	m_Framebuffer->BindTextureColor( m_GBuffer.Position, 0, GL_RGB16F, GL_FLOAT );

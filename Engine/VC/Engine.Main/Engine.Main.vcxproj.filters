@@ -10,8 +10,17 @@
     <Filter Include="Assets">
       <UniqueIdentifier>{5fefb8a4-fe5b-4d26-bd7d-35fc9f9af57c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Assets\Deferred">
+    <Filter Include="Assets\Shader">
+      <UniqueIdentifier>{4142718b-1cf5-476a-8bcb-a4c3c8cae137}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Shader\Deferred">
       <UniqueIdentifier>{d83d54ea-9e17-4808-8a6f-f62649e536b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\Shader\Post">
+      <UniqueIdentifier>{9f726d43-7ca8-49e0-9858-60c9f8301401}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\PostEffects">
+      <UniqueIdentifier>{e208cbea-4803-42c4-841e-3b13721bdf71}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -24,6 +33,12 @@
     <ClCompile Include="Program.cpp">
       <Filter>Code\Program</Filter>
     </ClCompile>
+    <ClCompile Include="LightRenderer.cpp">
+      <Filter>Code\Program</Filter>
+    </ClCompile>
+    <ClCompile Include="TestPosteffect.cpp">
+      <Filter>Code\PostEffects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -32,31 +47,43 @@
     <ClInclude Include="Program.h">
       <Filter>Code\Program</Filter>
     </ClInclude>
+    <ClInclude Include="TestPosteffect.h">
+      <Filter>Code\PostEffects</Filter>
+    </ClInclude>
+    <ClInclude Include="LightRenderer.h">
+      <Filter>Code\Program</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\tests\Main\Assets\test_shader.frag">
-      <Filter>Assets</Filter>
-    </None>
-    <None Include="..\..\tests\Main\Assets\test_shader.vert">
-      <Filter>Assets</Filter>
-    </None>
     <None Include="..\..\tests\Main\Assets\UnitCube.fbx">
       <Filter>Assets</Filter>
     </None>
     <None Include="..\..\tests\Main\Assets\UnitPlane.fbx">
       <Filter>Assets</Filter>
     </None>
-    <None Include="..\..\tests\Main\Assets\Deferred\shdr_deferred_base.frag">
-      <Filter>Assets\Deferred</Filter>
+    <None Include="..\..\tests\Main\Assets\Shader\Post\shdr_post_test.frag">
+      <Filter>Assets\Shader\Post</Filter>
     </None>
-    <None Include="..\..\tests\Main\Assets\Deferred\shdr_deferred_base.vert">
-      <Filter>Assets\Deferred</Filter>
+    <None Include="..\..\tests\Main\Assets\Shader\Post\shdr_post_test.vert">
+      <Filter>Assets\Shader\Post</Filter>
     </None>
-    <None Include="..\..\tests\Main\Assets\Deferred\shdr_deferred_light.frag">
-      <Filter>Assets\Deferred</Filter>
+    <None Include="..\..\tests\Main\Assets\Shader\Deferred\shdr_deferred_light.frag">
+      <Filter>Assets\Shader\Deferred</Filter>
     </None>
-    <None Include="..\..\tests\Main\Assets\Deferred\shdr_deferred_light.vert">
-      <Filter>Assets\Deferred</Filter>
+    <None Include="..\..\tests\Main\Assets\Shader\Deferred\shdr_deferred_light.vert">
+      <Filter>Assets\Shader\Deferred</Filter>
+    </None>
+    <None Include="..\..\tests\Main\Assets\Shader\Deferred\shdr_deferred_base.frag">
+      <Filter>Assets\Shader\Deferred</Filter>
+    </None>
+    <None Include="..\..\tests\Main\Assets\Shader\Deferred\shdr_deferred_base.vert">
+      <Filter>Assets\Shader\Deferred</Filter>
+    </None>
+    <None Include="..\..\tests\Main\Assets\Shader\test_shader.frag">
+      <Filter>Assets\Shader</Filter>
+    </None>
+    <None Include="..\..\tests\Main\Assets\Shader\test_shader.vert">
+      <Filter>Assets\Shader</Filter>
     </None>
   </ItemGroup>
 </Project>
