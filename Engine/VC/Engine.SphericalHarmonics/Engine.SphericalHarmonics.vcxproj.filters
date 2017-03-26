@@ -45,5 +45,11 @@
     <None Include="..\..\tests\SphericalHarmonics\Assets\shdr_samples.frag">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\..\tests\SphericalHarmonics\Assets\shdr_sh.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\..\tests\SphericalHarmonics\Assets\shdr_sh.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

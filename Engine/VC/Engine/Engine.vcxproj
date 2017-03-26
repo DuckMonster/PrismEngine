@@ -104,6 +104,7 @@
     <ClInclude Include="..\..\include\Prism\Render\RenderScene.h" />
     <ClInclude Include="..\..\include\Prism\Render\ShadowMapRenderer.h" />
     <ClInclude Include="..\..\include\Prism\Resource\FramebufferResource.h" />
+    <ClInclude Include="..\..\include\Prism\Resource\ImageResource.h" />
     <ClInclude Include="..\..\include\Prism\Resource\MeshResource.h" />
     <ClInclude Include="..\..\include\Prism\Resource\Resource.h" />
     <ClInclude Include="..\..\include\Prism\Resource\ShaderResource.h" />
@@ -122,6 +123,7 @@
     <ClCompile Include="..\..\src\Render\RenderScene.cpp" />
     <ClCompile Include="..\..\src\Render\ShadowMapRenderer.cpp" />
     <ClCompile Include="..\..\src\Resource\FramebufferResource.cpp" />
+    <ClCompile Include="..\..\src\Resource\ImageResource.cpp" />
     <ClCompile Include="..\..\src\Resource\Resource.cpp" />
     <ClCompile Include="..\..\src\Resource\MeshResource.cpp" />
     <ClCompile Include="..\..\src\Resource\ShaderResource.cpp" />

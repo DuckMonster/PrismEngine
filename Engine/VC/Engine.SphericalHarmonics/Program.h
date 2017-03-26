@@ -22,8 +22,6 @@ public:
 private:
 	void RenderSamples( );
 
-	GLuint m_Texture;
-
 	PR_CShaderResource* m_SkyboxShader;
 	PR_CShaderResource* m_ReflectionShader;
 	PR_CShaderResource* m_SampleShader;
@@ -31,7 +29,10 @@ private:
 	PR_CMeshResource*	m_Sphere;
 	PR_CMeshResource*	m_Head;
 
+	PR_CTextureResource*m_SkyboxTexture;
+
 	GLuint m_SampleVAO;
 	GLuint m_SampleVBO;
 	GLuint m_ColorVBO;
+	GLuint m_CoeffVBO;
 };

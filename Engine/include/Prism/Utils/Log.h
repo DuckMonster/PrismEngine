@@ -37,7 +37,7 @@ private:
 
 #ifdef PRISM_DEBUG
 #define PR_ASSERT_MSG(expr, msg)		if (!(expr)) PR_CLogger::HandleAssert(__FILE__, __LINE__, msg)
-#define PR_ASSERT(expr)					PR_ASSERT_MSG("No message.");
+#define PR_ASSERT(expr)					PR_ASSERT_MSG(expr, "No message.");
 #else
 #define PR_ASSERT_MSG(expr, msg)		((void)0);
 #define PR_ASSERT(expr)					((void)0);

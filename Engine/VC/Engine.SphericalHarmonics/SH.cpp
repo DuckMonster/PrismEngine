@@ -33,7 +33,7 @@ namespace {
 			double somx2 = sqrt( (1.0 - x) * (1.0 + x) );
 
 			double fact = 1.0;
-			for (int i = 0; i <= m; i++) {
+			for (int i = 1; i <= m; i++) {
 				pmm *= (-fact) * somx2;
 				fact += 2.0;
 			}
@@ -54,26 +54,55 @@ namespace {
 		return pll;
 	}
 
+	//double P( int l, int m, double x ) {
+	//	// evaluate an Associated Legendre Polynomial P(l,m,x) at x
+	//	double pmm = 1.0;
+	//	if (m > 0) {
+	//		double somx2 = sqrt( (1.0 - x)*(1.0 + x) );
+	//		double fact = 1.0;
+	//		for (int i=1; i <= m; i++) {
+	//			pmm *= (-fact) * somx2;
+	//			fact += 2.0;
+	//		}
+	//	}
+	//	if (l == m) return pmm;
+	//	double pmmp1 = x * (2.0*m + 1.0) * pmm;
+	//	if (l == m + 1) return pmmp1;
+	//	double pll = 0.0;
+	//	for (int ll=m + 2; ll <= l; ++ll) {
+	//		pll = ((2.0*ll - 1.0)*x*pmmp1 - (ll + m - 1.0)*pmm) / (ll - m);
+	//		pmm = pmmp1;
+	//		pmmp1 = pll;
+	//	}
+	//	return pll;
+	//}
+
 	double K( int l, int m ) {
 		//double temp = ((2.0*l + 1.0)*FastFactorial( l - m )) / (4.0 * pi<double>( ) * FastFactorial( l + m ));
 		double temp = ((2.0*l + 1.0)*factorial( l - m )) / (4.0 * pi<double>( ) * factorial( l + m ));
 		return sqrt( temp );
 	}
 
-	double SH( int l, int m, double theta, double phi ) {
-		const double sqrt2 = sqrt( 2.0 );
-		if (m == 0) return K( l, 0 ) * P( l, m, cos( theta ) );
-		else if (m > 0) return sqrt2 * K( l, m ) * cos( m*phi ) * P( l, m, cos( theta ) );
-		else return sqrt2 * K( l, -m ) * sin( -m * phi ) * P( l, -m, cos( theta ) );
-	}
+	//	double K( int l, int m ) {
+	//		// renormalisation constant for SH function
+	//		double temp = ((2.0*l + 1.0) * factorial( l - m )) / (4.0* pi<double>() * factorial( l + m ));
+	//		return sqrt( temp );
+	//	}
 
-	/**	Random with range [0.0..1.0)
-	*******************************************************************************/
+		/**	Random with range [0.0..1.0)
+		*******************************************************************************/
 	float frand( ) { return (float)rand( ) / RAND_MAX; }
 }
 
-/**	Spherical Harmonics - Generate Samples
+/**	Spherical Harmonic Coefficient
 *******************************************************************************/
+double SH( int l, int m, double theta, double phi ) {
+	const double sqrt2 = sqrt( 2.0 );
+	if (m == 0) return K( l, 0 ) * P( l, m, cos( theta ) );
+	else if (m > 0) return sqrt2 * K( l, m ) * cos( m*phi ) * P( l, m, cos( theta ) );
+	else return sqrt2 * K( l, -m ) * sin( -m * phi ) * P( l, -m, cos( theta ) );
+}
+
 void SH_GenSamples( SH_Sample samples[], const size_t sampleSize ) {
 	int sample_sqrt = sqrt( sampleSize );
 	float oneOverN = 1.f / sample_sqrt;
@@ -109,18 +138,32 @@ void SH_GenSamples( SH_Sample samples[], const size_t sampleSize ) {
 
 /**	Spherical Harmonics - Project
 *******************************************************************************/
-void SH_Project( SH_Func fn, const SH_Sample samples[], const size_t sampleSize, vec3 result[] ) {
+void SH_Project( PR_CImageResource * image, const SH_Sample samples[], const size_t sampleSize, glm::vec3 result[] ) {
 	const double weight = 4.0 * glm::pi<double>( );
+
+	float test = 0.f;
 
 	// for each sample
 	for (int i=0; i < sampleSize; ++i) {
 		double theta = samples[i].sph.x;
 		double phi = samples[i].sph.y;
 
+		float u = phi / (2.f * pi<float>( ));
+		float v = 1.f - theta / (pi<float>( ));
+
 		for (int n = 0; n < 9; ++n) {
-			result[n] += fn( theta, phi ) * (float)samples[i].coeff[n];
+			float* pix = (float*)image->GetPixel( u, v );
+			vec3 clr( pix[0], pix[1], pix[2] );
+
+			result[n] += clr * (float)samples[i].coeff[n];
+			test += (float)samples[i].coeff[n];
+
+			float c = (float)samples[i].coeff[n];
 		}
 	}
+
+	if (isinf( test ))
+		std::cout << "Shit.\n";
 
 	// divide the result by weight and number of samples
 	double factor = weight / sampleSize;

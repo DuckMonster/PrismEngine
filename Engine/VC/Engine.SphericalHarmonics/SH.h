@@ -1,5 +1,7 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <Prism/Resource/ImageResource.h>
+
 static const int SH_COEFF_N = 0;
 static const int SH_SAMPLE_SIZE = 10000;
 
@@ -9,7 +11,7 @@ struct SH_Sample {
 	double coeff[9];
 };
 
-typedef glm::vec3 (*SH_Func)(double theta, double phi);
+double SH( int l, int m, double theta, double phi );
 
 void SH_GenSamples( SH_Sample samples[], const size_t sampleSize );
-void SH_Project( SH_Func fn, const SH_Sample samples[], const size_t sampleSize, glm::vec3 result[] );
+void SH_Project( PR_CImageResource* image, const SH_Sample samples[], const size_t sampleSize, glm::vec3 result[] );

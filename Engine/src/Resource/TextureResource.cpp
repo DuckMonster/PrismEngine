@@ -1,5 +1,5 @@
 #include <Prism\Resource\TextureResource.h>
-#include <SOIL\SOIL.h>
+#include <Prism\Resource\ImageResource.h>
 
 /**	Constructor
 *******************************************************************************/
@@ -33,25 +33,47 @@ void PR_CTextureResource::SetWrapMode( GLuint wrapMode ) {
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapMode );
 }
 
+/**	Load Image
+*******************************************************************************/
+void PR_CTextureResource::LoadImage( PR_CImageResource* image ) {
+	m_Width = image->GetWidth( );
+	m_Height = image->GetHeight( );
+
+	GLuint dataFormat = image->GetGLDataFormat( );
+	GLuint dataType = image->GetGLDataType( );
+
+	GLuint internalFormat;
+
+	switch (dataFormat) {
+	case GL_RGB:
+	case GL_BGR:
+		internalFormat = dataType == GL_FLOAT ? GL_RGB16F : GL_RGB; break;
+	case GL_RGBA:
+	case GL_BGRA:
+		internalFormat = dataType == GL_FLOAT ? GL_RGBA16F : GL_RGBA; break;
+	}
+
+	Bind( 0 );
+	glTexImage2D( GL_TEXTURE_2D, 0, internalFormat,
+		m_Width, m_Height, 0,
+		dataFormat, dataType, image->GetBits( ) );
+}
+
 /**	Load
 *******************************************************************************/
 bool PR_CTextureResource::Load( const std::string& resourcePath ) {
 	Create( );
 
-	//--------------------------------------------------- Load image with SOIL
-	unsigned char* img;
-	img = SOIL_load_image( resourcePath.c_str( ), &m_Width, &m_Height, 0, SOIL_LOAD_RGBA );
-
-	// Failed
-	if (img == NULL)
+	// Load image
+	PR_CImageResource* image = PR_CResource::Load<PR_CImageResource>( resourcePath.c_str( ) );
+	if (image == NULL)
 		return false;
 
-	//--------------------------------------------------- Upload pixel data
-	Bind( 0 );
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, img );
+	LoadImage( image );
 
-	//--------------------------------------------------- Free from SOIL
-	SOIL_free_image_data( img );
+	// Free image data
+	image->Delete( );
+	image = NULL;
 
 	return true;
 }

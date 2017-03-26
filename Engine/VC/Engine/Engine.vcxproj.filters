@@ -89,6 +89,9 @@
     <ClInclude Include="..\..\include\Prism\Render\PostEffect\FXAA.h">
       <Filter>Header Files\Render\PostEffect</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\Prism\Resource\ImageResource.h">
+      <Filter>Header Files\Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Context.cpp">
@@ -138,6 +141,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\Render\PostEffect\FXAA.cpp">
       <Filter>Source Files\Render\PostEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Resource\ImageResource.cpp">
+      <Filter>Source Files\Resource</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

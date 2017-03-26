@@ -2,6 +2,8 @@
 #include <Prism/Resource/Resource.h>
 #include <GL/glew.h>
 
+class PR_CImageResource;
+
 class PR_CTextureResource : public PR_CResource {
 public:
 	PR_CTextureResource( );
@@ -11,6 +13,8 @@ public:
 
 	void SetFilter( GLuint filter );
 	void SetWrapMode( GLuint wrapMode );
+
+	void LoadImage( PR_CImageResource* image );
 
 protected:
 	bool Load( const std::string& resourcePath ) override;

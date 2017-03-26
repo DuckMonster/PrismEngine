@@ -96,7 +96,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>GLEW_STATIC;SFML_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;SFML_STATIC;PRISM_DEBUG;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(PrismDir)include;$(PrismDir).dependency\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -170,6 +170,8 @@
     <None Include="..\..\tests\SphericalHarmonics\Assets\shdr_reflection.vert" />
     <None Include="..\..\tests\SphericalHarmonics\Assets\shdr_samples.frag" />
     <None Include="..\..\tests\SphericalHarmonics\Assets\shdr_samples.vert" />
+    <None Include="..\..\tests\SphericalHarmonics\Assets\shdr_sh.frag" />
+    <None Include="..\..\tests\SphericalHarmonics\Assets\shdr_sh.vert" />
     <None Include="..\..\tests\SphericalHarmonics\Assets\shdr_skybox.frag" />
     <None Include="..\..\tests\SphericalHarmonics\Assets\shdr_skybox.vert" />
   </ItemGroup>
