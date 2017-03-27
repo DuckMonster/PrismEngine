@@ -8,7 +8,7 @@
 
 #include "SH.h"
 
-#define SAMPLE_N 100
+#define SAMPLE_N 10000
 #define SAMPLE_N_SQRT 100
 
 namespace {
@@ -49,7 +49,7 @@ void CProgram::Init( ) {
 	m_Head = PR_CResource::Load<PR_CMeshResource>( "Head/head.fbx" );
 
 	//PR_CImageResource* image = PR_CResource::Load<PR_CImageResource>( "sample.bmp" );
-	PR_CImageResource* image = PR_CResource::Load<PR_CImageResource>( "Skybox.hdr" );
+	PR_CImageResource* image = PR_CResource::Load<PR_CImageResource>( "Apt.hdr" );
 	m_SkyboxTexture = PR_CResource::Create<PR_CTextureResource>( );
 	m_SkyboxTexture->LoadImage( image );
 
@@ -71,15 +71,15 @@ void CProgram::Init( ) {
 	glm::vec3 projection[9];
 	SH_Project( image, samples, SAMPLE_N, projection );
 
-	projection[0] = glm::vec3( 0.39925f );
-	projection[1] = glm::vec3( -0.21075f );
-	projection[2] = glm::vec3( 0.28687f );
-	projection[3] = glm::vec3( 0.28277f );
-	projection[4] = glm::vec3( -0.31530f );
-	projection[5] = glm::vec3( -0.00040f );
-	projection[6] = glm::vec3( 0.13159f );
-	projection[7] = glm::vec3( 0.00098f );
-	projection[8] = glm::vec3( -0.09359f );
+	//projection[0] = glm::vec3( 0.39925f );
+	//projection[1] = glm::vec3( -0.21075f );
+	//projection[2] = glm::vec3( 0.28687f );
+	//projection[3] = glm::vec3( 0.28277f );
+	//projection[4] = glm::vec3( -0.31530f );
+	//projection[5] = glm::vec3( -0.00040f );
+	//projection[6] = glm::vec3( 0.13159f );
+	//projection[7] = glm::vec3( 0.00098f );
+	//projection[8] = glm::vec3( -0.09359f );
 
 	m_ReflectionShader->Set( "u_SHCoeff", projection, 9 );
 
@@ -138,7 +138,7 @@ void CProgram::Render( double delta ) {
 	glm::ivec2 contextSize = PR_CContext::Instance( )->GetWindowSize( );
 	float contextRatio = (float)contextSize.x / contextSize.y;
 
-	glm::vec3 eye = glm::vec3( glm::sin( t * 0.2f ), glm::cos( t * 0.15f ) * 0.5f, glm::cos( t * 0.2f ) ) * 5.f;
+	glm::vec3 eye = glm::vec3( glm::sin( t * 0.2f ), glm::cos( t * 0.15f ) * 0.5f, glm::cos( t * 0.2f ) ) * 2.f;
 
 	glm::mat4 proj = glm::perspective( glm::radians( 90.f ), contextRatio, 0.01f, 10.f );
 	glm::mat4 view = glm::lookAt(
@@ -166,7 +166,7 @@ void CProgram::Render( double delta ) {
 	m_ReflectionShader->Set( "u_Model", glm::scale( glm::mat4( 1.f ), glm::vec3( 1.f ) ) );
 	m_ReflectionShader->Set( "u_Eye", eye );
 
-	m_Sphere->Render( );
+	m_Head->Render( );
 
 	int c_index = 0;
 
@@ -179,7 +179,7 @@ void CProgram::Render( double delta ) {
 	m_SampleShader->Set( "u_CoeffIndex", c_index );
 	glBindVertexArray( m_SampleVAO );
 	glPointSize( 2.f );
-	glDrawArrays( GL_POINTS, 0, SAMPLE_N );
+	//glDrawArrays( GL_POINTS, 0, SAMPLE_N );
 
 	//m_Sphere->Render( );
 	//m_Head->Render( );

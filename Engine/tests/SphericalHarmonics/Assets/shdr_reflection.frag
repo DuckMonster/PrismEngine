@@ -20,5 +20,5 @@ vec4 sphereSkybox(vec3 direction, sampler2D sampler) {
 void main() {
 	vec3 eyeDir = normalize(f_World - u_Eye);
 	vec3 reflectedNormal = reflect(eyeDir, f_Normal);
-	o_Color = sphereSkybox(reflectedNormal, u_Sampler);
+	o_Color = 1.5 * sphereSkybox(reflectedNormal, u_Sampler);
 }

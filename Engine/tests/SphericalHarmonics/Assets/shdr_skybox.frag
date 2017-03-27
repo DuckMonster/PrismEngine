@@ -9,7 +9,7 @@ uniform sampler2D u_Sampler;
 out vec4 o_Color;
 
 vec4 sphereSkybox(vec3 direction, sampler2D sampler) {
-	float phi = (atan(direction.z, direction.x) + PI) / TAU;
+	float phi = (atan(direction.z, direction.x)) / TAU;
 	float theta = direction.y * 0.5 + 0.5;
 	return texture(sampler, vec2(phi, theta));
 }
