@@ -35,12 +35,15 @@ void PR_CTextureResource::SetWrapMode( GLuint wrapMode ) {
 
 /**	Load Image
 *******************************************************************************/
-void PR_CTextureResource::LoadImage( PR_CImageResource* image ) {
-	m_Width = image->GetWidth( );
-	m_Height = image->GetHeight( );
+bool PR_CTextureResource::LoadFromImage( PR_CImageResource& image ) {
+	if (!image.IsLoaded( ))
+		return false;
 
-	GLuint dataFormat = image->GetGLDataFormat( );
-	GLuint dataType = image->GetGLDataType( );
+	m_Width = image.GetWidth( );
+	m_Height = image.GetHeight( );
+
+	GLuint dataFormat = image.GetGLDataFormat( );
+	GLuint dataType = image.GetGLDataType( );
 
 	GLuint internalFormat;
 
@@ -56,39 +59,38 @@ void PR_CTextureResource::LoadImage( PR_CImageResource* image ) {
 	Bind( 0 );
 	glTexImage2D( GL_TEXTURE_2D, 0, internalFormat,
 		m_Width, m_Height, 0,
-		dataFormat, dataType, image->GetBits( ) );
+		dataFormat, dataType, image.GetBits( ) );
+
+	return true;
 }
 
 /**	Load
 *******************************************************************************/
-bool PR_CTextureResource::Load( const std::string& resourcePath ) {
+bool PR_CTextureResource::LoadFromFile( const std::string& resourcePath ) {
 	Create( );
 
 	// Load image
-	PR_CImageResource* image = PR_CResource::Load<PR_CImageResource>( resourcePath.c_str( ) );
-	if (image == NULL)
+	PR_CImageResource image;
+	if (!image.LoadFromFile( resourcePath ))
 		return false;
 
-	LoadImage( image );
-
-	// Free image data
-	image->Delete( );
-	image = NULL;
+	LoadFromImage( image );
 
 	return true;
 }
 
 /**	Create
 *******************************************************************************/
-bool PR_CTextureResource::Create( ) {
+void PR_CTextureResource::Create( ) {
+	// Already created
+	if (m_Handle != -1)
+		return;
+
 	glGenTextures( 1, &m_Handle );
 	Bind( 0 );
 
 	SetWrapMode( GL_REPEAT );
 	SetFilter( GL_LINEAR );
-	//SetFilter( GL_NEAREST );
-
-	return true;
 }
 
 /**	Release

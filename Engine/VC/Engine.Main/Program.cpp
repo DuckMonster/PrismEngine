@@ -16,13 +16,13 @@ CProgram::CProgram( ) {
 void CProgram::Init( ) {
 	PR_CLogger::sm_LogLevel = PR_LOG_LEVEL_TRIVIAL;
 
-	m_Shader	= PR_CResource::Load<PR_CShaderResource>( "Shader/Deferred/shdr_deferred_base" );
-	m_mesh		= PR_CResource::Load<PR_CMeshResource>( "UnitCube.fbx" );
-	m_plane		= PR_CResource::Load<PR_CMeshResource>( "UnitPlane.fbx" );
-	m_Texture	= PR_CResource::Load<PR_CTextureResource>( "sample.png" );
+	m_Shader.CompileFiles( "Shader/Deferred/shdr_deferred_base" );
+	m_mesh.LoadFromFile( "UnitCube.fbx" );
+	m_plane.LoadFromFile( "UnitPlane.fbx" );
+	m_Texture.LoadFromFile( "sample.png" );
 
-	m_Material.SetShader( m_Shader );
-	m_Material.SetTexture( m_Texture );
+	m_Material.SetShader( &m_Shader );
+	m_Material.SetTexture( &m_Texture );
 	m_Material.SetColor( glm::vec4( 1.f, 0.f, 0.f, 1.f ) );
 
 	m_GroundMaterial = m_Material;
@@ -62,15 +62,15 @@ void CProgram::Render( double delta ) {
 	world = glm::translate( glm::mat4( 1.f ), glm::vec3( 1.5f, 0.f, 0.f ) );
 	//world = glm::scale( world, glm::vec3( 0.5f ) );
 	//world = glm::rotate( world, t, glm::vec3( 0.f, 0.f, 1.f ) );
-	scene.AddMesh( m_mesh, &m_Material, world );
+	scene.AddMesh( &m_mesh, &m_Material, world );
 
 	world = glm::translate( glm::mat4( 1.f ), glm::vec3( -1.5f, 0.5f, 0.f ) );
 	world = glm::rotate( world, t, glm::vec3( 0.f, 1.f, 0.f ) );
-	scene.AddMesh( m_mesh, &m_Material, world );
+	scene.AddMesh( &m_mesh, &m_Material, world );
 
 	world = glm::translate( glm::mat4( 1.f ), glm::vec3( 0.f, -0.5f, 0.f ) );
 	world = glm::scale( world, glm::vec3( 100.f ) );
-	scene.AddMesh( m_plane, &m_GroundMaterial, world );
+	scene.AddMesh( &m_plane, &m_GroundMaterial, world );
 
 	m_DeferredRenderer.Render( scene );
 	m_Renderer.Render( scene );
@@ -94,8 +94,8 @@ void CProgram::Render( double delta ) {
 		(right + left) / 2.f, (bottom + top) / 2.f, 0.f, 1.f
 	);
 
-	PR_SGBuffer& gBuffer = m_DeferredRenderer.GetGBuffer( );
-	PR_CTextureResource* lightResult = m_LightRenderer.ApplyTo( scene, gBuffer, m_ShadowRenderer.GetShadowTexture( ) );
+	PR_SGBuffer* gBuffer = m_DeferredRenderer.GetGBuffer( );
+	PR_CTextureResource* lightResult = m_LightRenderer.ApplyTo( scene, gBuffer, &m_ShadowRenderer.GetShadowTexture( ) );
 	PR_CTextureResource* postResult = lightResult;// m_TestPosteffect.ApplyTo( lightResult );
 
 	if (!sf::Keyboard::isKeyPressed( sf::Keyboard::Space ))

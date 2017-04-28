@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include <Prism/Resource/Resource.h>
 #include <GL/glew.h>
 #include <glm/matrix.hpp>
@@ -9,9 +10,12 @@ public:
 	PR_CShaderResource( );
 	~PR_CShaderResource( );
 
+	const bool IsValid( ) { return m_shaderHandle != -1; }
+
 	void Use( );
-	void Compile( const char* vertSrc, const char* fragSrc );
-	void CompileFile( const std::string& vertFile, const std::string& fragFile );
+	void CompileSource( const char* vertSrc, const char* fragSrc );
+	void CompileFiles( const std::string& fileName );
+	void CompileFiles( const std::string& vertFile, const std::string& fragFile );
 
 	GLuint GetHandle( ) { return m_shaderHandle; }
 
@@ -20,11 +24,9 @@ public:
 	template<typename TValueType>
 	bool Set( const std::string& uniform, const TValueType* ptr, size_t count );
 
-protected:
-	bool Load( const std::string& path ) override;
-	bool Create( ) override;
-	void Delete( ) override;
+	void Delete( );
 
+protected:
 	GLuint CreateShaderFromSource( GLuint shaderType, const char* src );
 
 	void SetUniform( GLuint uniform, const glm::mat4* value, size_t count ) { glUniformMatrix4fv( uniform, count, false, glm::value_ptr( *value ) ); }

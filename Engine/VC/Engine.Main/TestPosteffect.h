@@ -11,7 +11,7 @@ public:
 private:
 	void LoadResources( );
 
-	PR_CShaderResource*			m_Shader;
-	PR_CFramebufferResource*	m_Framebuffer;
-	PR_CTextureResource*		m_Output;
+	PR_CShaderResource			m_Shader;
+	PR_CFramebufferResource		m_Framebuffer;
+	PR_CTextureResource			m_Output;
 };

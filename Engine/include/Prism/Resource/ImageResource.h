@@ -11,6 +11,9 @@ private:
 
 public:
 	PR_CImageResource( );
+	~PR_CImageResource( );
+
+	const bool IsLoaded( ) { return m_Bitmap == NULL; }
 
 	const int GetWidth( ) { return m_Width; }
 	const int GetHeight( ) { return m_Height; }
@@ -22,11 +25,10 @@ public:
 	const GLuint GetGLDataFormat( );
 	const GLuint GetGLDataType( );
 
-	void Delete( ) override;
+	bool LoadFromFile( const std::string& path );
+	void Delete( );
 
 private:
-	bool Load( const std::string& path ) override;
-	bool Create( ) override;
 
 	FREE_IMAGE_FORMAT m_Format;
 	FREE_IMAGE_COLOR_TYPE m_ColorFormat;

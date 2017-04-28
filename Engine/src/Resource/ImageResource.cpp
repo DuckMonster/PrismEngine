@@ -17,8 +17,6 @@ void PR_CImageResource::ReleaseFreeImage( ) {
 bool PR_CImageResource::sm_FreeImageInitialized = false;
 //---------------------------------------------------
 
-
-
 /**	Constructor
 *******************************************************************************/
 PR_CImageResource::PR_CImageResource( ) : PR_CResource( ),
@@ -27,6 +25,12 @@ m_Bitmap( NULL ),
 m_Width( -1 ),
 m_Height( -1 ),
 m_Bits( NULL ) {
+}
+
+/**	Destructor
+*******************************************************************************/
+PR_CImageResource::~PR_CImageResource( ) {
+	Delete( );
 }
 
 /**	Get Pixel (from uv coordinates)
@@ -85,9 +89,12 @@ const GLuint PR_CImageResource::GetGLDataType( ) {
 
 /**	Load
 *******************************************************************************/
-bool PR_CImageResource::Load( const std::string& path ) {
+bool PR_CImageResource::LoadFromFile( const std::string& path ) {
 	if (sm_FreeImageInitialized)
 		InitFreeImage( );
+
+	if (IsLoaded( ))
+		Delete( );
 
 	m_Format = FreeImage_GetFileType( path.c_str( ) );
 
@@ -105,27 +112,21 @@ bool PR_CImageResource::Load( const std::string& path ) {
 		return false;
 	}
 
-	m_Bitmap	= FreeImage_Load( m_Format, path.c_str( ) );
+	m_Bitmap		= FreeImage_Load( m_Format, path.c_str( ) );
 
-	m_ColorFormat		= FreeImage_GetColorType( m_Bitmap );
-	m_DataType = FreeImage_GetImageType( m_Bitmap );
-	m_Width		= FreeImage_GetWidth( m_Bitmap );
-	m_Height	= FreeImage_GetHeight( m_Bitmap );
-	m_Components= FreeImage_GetColorsUsed( m_Bitmap );
-	m_BPP		= FreeImage_GetBPP( m_Bitmap );
-	m_Bits		= FreeImage_GetBits( m_Bitmap );
-}
-
-/**	Create (Image resource can't be created)
-*******************************************************************************/
-bool PR_CImageResource::Create( ) {
-	return false;
+	m_ColorFormat	= FreeImage_GetColorType( m_Bitmap );
+	m_DataType		= FreeImage_GetImageType( m_Bitmap );
+	m_Width			= FreeImage_GetWidth( m_Bitmap );
+	m_Height		= FreeImage_GetHeight( m_Bitmap );
+	m_Components	= FreeImage_GetColorsUsed( m_Bitmap );
+	m_BPP			= FreeImage_GetBPP( m_Bitmap );
+	m_Bits			= FreeImage_GetBits( m_Bitmap );
 }
 
 /**	Delete
 *******************************************************************************/
 void PR_CImageResource::Delete( ) {
-	if (m_Bitmap == NULL)
+	if (!IsLoaded( ))
 		return;
 
 	FreeImage_Unload( m_Bitmap );

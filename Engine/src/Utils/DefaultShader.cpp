@@ -29,13 +29,12 @@ namespace {
 		"}";
 }
 
-PR_CShaderResource* PR_QuadShader( ) {
-	static PR_CShaderResource* SHADER = NULL;
+PR_CShaderResource& PR_QuadShader( ) {
+	static PR_CShaderResource SHADER;
 
 	// Compile
-	if (SHADER == NULL) {
-		SHADER = PR_CResource::Create<PR_CShaderResource>( );
-		SHADER->Compile( QUAD_SHADER_VERT, QUAD_SHADER_FRAG );
+	if (!SHADER.IsValid( )) {
+		SHADER.CompileSource( QUAD_SHADER_VERT, QUAD_SHADER_FRAG );
 	}
 
 	return SHADER;

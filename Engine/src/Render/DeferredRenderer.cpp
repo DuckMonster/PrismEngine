@@ -58,8 +58,7 @@ void main( ) {\
 
 /**	Constructor
 *******************************************************************************/
-PR_CDeferredRenderer::PR_CDeferredRenderer( ) :
-	m_Framebuffer( NULL ), m_Shader( NULL ) {
+PR_CDeferredRenderer::PR_CDeferredRenderer( ) {
 }
 
 /**	Render
@@ -67,7 +66,7 @@ PR_CDeferredRenderer::PR_CDeferredRenderer( ) :
 void PR_CDeferredRenderer::Render( PR_CRenderScene & scene ) {
 	LoadResources( );
 
-	m_Framebuffer->Bind( );
+	m_Framebuffer.Bind( );
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 	PR_CRenderScene::SNode* node = NULL;
@@ -81,16 +80,16 @@ void PR_CDeferredRenderer::Render( PR_CRenderScene & scene ) {
 				PR_CMaterial* material = meshNode->m_Material;
 
 				// Setup shader
-				m_Shader->Set( "u_Camera", scene.GetCameraMatrix( ) );
-				m_Shader->Set( "u_World", meshNode->m_Transform );
+				m_Shader.Set( "u_Camera", scene.GetCameraMatrix( ) );
+				m_Shader.Set( "u_World", meshNode->m_Transform );
 
-				m_Shader->Set( "u_Material.color", material->GetColor( ) );
+				m_Shader.Set( "u_Material.color", material->GetColor( ) );
 				if (material->GetTexture( ) != NULL) {
 					material->GetTexture( )->Bind( 0 );
-					m_Shader->Set( "u_Material.textureWeight", 1.f );
+					m_Shader.Set( "u_Material.textureWeight", 1.f );
 				}
 				else {
-					m_Shader->Set( "u_Material.textureWeight", 0.f );
+					m_Shader.Set( "u_Material.textureWeight", 0.f );
 				}
 
 				// Render
@@ -105,27 +104,21 @@ void PR_CDeferredRenderer::Render( PR_CRenderScene & scene ) {
 /**	Load Resources
 *******************************************************************************/
 void PR_CDeferredRenderer::LoadResources( ) {
-	if (m_Framebuffer != NULL || m_Shader != NULL)
+	if (m_Framebuffer.IsValid( ) || m_Shader.IsValid( ))
 		return;
 
 	// Framebuffer
-	m_Framebuffer		= PR_CResource::Create<PR_CFramebufferResource>( );
-	m_GBuffer.Position	= PR_CResource::Create<PR_CTextureResource>( );
-	m_GBuffer.Normal	= PR_CResource::Create<PR_CTextureResource>( );
-	m_GBuffer.Diffuse	= PR_CResource::Create<PR_CTextureResource>( );
-	m_GBuffer.Depth		= PR_CResource::Create<PR_CTextureResource>( );
+	m_Framebuffer.Create( );
+	m_GBuffer.Position.Create( );
+	m_GBuffer.Normal.Create( );
+	m_GBuffer.Diffuse.Create( );
+	m_GBuffer.Depth.Create( );
 
-	//m_GBuffer.Position->SetFilter( GL_NEAREST );
-	//m_GBuffer.Normal->SetFilter( GL_NEAREST );
-	//m_GBuffer.Diffuse->SetFilter( GL_NEAREST );
-
-	m_Framebuffer->SetResolution( PR_CContext::Instance( )->GetWindowWidth( ), PR_CContext::Instance( )->GetWindowHeight( ) );
-	m_Framebuffer->BindTextureColor( m_GBuffer.Position, 0, GL_RGB16F, GL_FLOAT );
-	m_Framebuffer->BindTextureColor( m_GBuffer.Normal, 1, GL_RGB16F, GL_FLOAT );
-	m_Framebuffer->BindTextureColor( m_GBuffer.Diffuse, 2, GL_RGB, GL_UNSIGNED_BYTE );
-	m_Framebuffer->BindTextureDepth( m_GBuffer.Depth );
+	m_Framebuffer.BindTextureColor( m_GBuffer.Position, 0, GL_RGB16F, GL_FLOAT );
+	m_Framebuffer.BindTextureColor( m_GBuffer.Normal, 1, GL_RGB16F, GL_FLOAT );
+	m_Framebuffer.BindTextureColor( m_GBuffer.Diffuse, 2, GL_RGB, GL_UNSIGNED_BYTE );
+	m_Framebuffer.BindTextureDepth( m_GBuffer.Depth );
 
 	// Shader
-	m_Shader			= PR_CResource::Create<PR_CShaderResource>( );
-	m_Shader->Compile( SRC_DEFERRED_VERT, SRC_DEFERRED_FRAG );
+	m_Shader.CompileSource( SRC_DEFERRED_VERT, SRC_DEFERRED_FRAG );
 }

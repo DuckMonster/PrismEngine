@@ -6,12 +6,12 @@
 class CLightRenderer {
 public:
 	CLightRenderer( );
-	PR_CTextureResource* ApplyTo( PR_CRenderScene& scene, PR_SGBuffer& gBuffer, PR_CTextureResource* shadowBuffer );
+	PR_CTextureResource* ApplyTo( PR_CRenderScene& scene, PR_SGBuffer* gBuffer, PR_CTextureResource* shadowBuffer );
 
 private:
 	void LoadResources( );
 
-	PR_CShaderResource*			m_Shader;
-	PR_CFramebufferResource*	m_Framebuffer;
-	PR_CTextureResource*		m_Output;
+	PR_CShaderResource			m_Shader;
+	PR_CFramebufferResource		m_Framebuffer;
+	PR_CTextureResource			m_Output;
 };

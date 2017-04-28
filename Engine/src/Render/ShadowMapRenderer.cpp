@@ -87,10 +87,7 @@ void main( ) {\
 
 /**	Constructor
 *******************************************************************************/
-PR_CShadowMapRenderer::PR_CShadowMapRenderer( ) :
-	m_DepthShader( NULL ), m_ShadowShader( NULL ),
-	m_DepthFramebuffer( NULL ), m_DepthTexture( NULL ),
-	m_ShadowFramebuffer( NULL ), m_ShadowTexture( NULL ) {
+PR_CShadowMapRenderer::PR_CShadowMapRenderer( ) {
 }
 
 /**	Render
@@ -98,7 +95,7 @@ PR_CShadowMapRenderer::PR_CShadowMapRenderer( ) :
 void PR_CShadowMapRenderer::Render( PR_CRenderScene& scene ) {
 	LoadResources( );
 
-	m_DepthFramebuffer->Bind( );
+	m_DepthFramebuffer.Bind( );
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 	glm::mat4 lightMatrix = glm::ortho( -10.f, 10.f, -10.f, 10.f, -40.f, 40.f );
@@ -117,8 +114,8 @@ void PR_CShadowMapRenderer::Render( PR_CRenderScene& scene ) {
 				PR_CRenderScene::SMeshNode* meshNode = (PR_CRenderScene::SMeshNode*)node;
 
 				// Setup shader
-				m_DepthShader->Set( "u_Light", lightMatrix );
-				m_DepthShader->Set( "u_World", meshNode->m_Transform );
+				m_DepthShader.Set( "u_Light", lightMatrix );
+				m_DepthShader.Set( "u_World", meshNode->m_Transform );
 
 				// Render
 				meshNode->m_Mesh->Render( );
@@ -126,7 +123,7 @@ void PR_CShadowMapRenderer::Render( PR_CRenderScene& scene ) {
 		}
 	}
 
-	m_ShadowFramebuffer->Bind( );
+	m_ShadowFramebuffer.Bind( );
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 	// Render all nodes into shadow buffer
@@ -137,15 +134,15 @@ void PR_CShadowMapRenderer::Render( PR_CRenderScene& scene ) {
 				PR_CRenderScene::SMeshNode* meshNode = (PR_CRenderScene::SMeshNode*)node;
 
 				// Setup shader
-				m_ShadowShader->Set( "u_Camera", scene.GetCameraMatrix( ) );
-				m_ShadowShader->Set( "u_Light", lightMatrix );
-				m_ShadowShader->Set( "u_World", meshNode->m_Transform );
+				m_ShadowShader.Set( "u_Camera", scene.GetCameraMatrix( ) );
+				m_ShadowShader.Set( "u_Light", lightMatrix );
+				m_ShadowShader.Set( "u_World", meshNode->m_Transform );
 
-				m_ShadowShader->Set( "u_Bias", 0.0008f );
-				m_ShadowShader->Set( "u_AngleBias", 0.0016f );
-				m_ShadowShader->Set( "u_LightDirection", scene.GetLight( ).m_Direction );
+				m_ShadowShader.Set( "u_Bias", 0.0008f );
+				m_ShadowShader.Set( "u_AngleBias", 0.0016f );
+				m_ShadowShader.Set( "u_LightDirection", scene.GetLight( ).m_Direction );
 
-				m_DepthTexture->Bind( 0 );
+				m_DepthTexture.Bind( 0 );
 
 				// Render
 				meshNode->m_Mesh->Render( );
@@ -159,33 +156,29 @@ void PR_CShadowMapRenderer::Render( PR_CRenderScene& scene ) {
 /**	Load Resources
 *******************************************************************************/
 void PR_CShadowMapRenderer::LoadResources( ) {
-	if (m_DepthFramebuffer != NULL || m_ShadowFramebuffer != NULL || m_DepthShader != NULL || m_ShadowShader != NULL)
+	if (m_DepthFramebuffer.IsValid( ) || m_DepthShader.IsValid( ))
 		return;
 
 	//--------------------------------------------------- Depth buffer
-	m_DepthFramebuffer	= PR_CResource::Create<PR_CFramebufferResource>( );
-	m_DepthTexture		= PR_CResource::Create<PR_CTextureResource>( );
+	m_DepthFramebuffer.Create( );
+	m_DepthTexture.Create( );
 
-	m_DepthFramebuffer->SetResolution( 2048, 2048 );
-	m_DepthFramebuffer->BindTextureDepth( m_DepthTexture );
+	m_DepthFramebuffer.BindTextureDepth( m_DepthTexture );
 
 	//--------------------------------------------------- Depth shader
-	m_DepthShader = PR_CResource::Create<PR_CShaderResource>( );
-	m_DepthShader->Compile( SRC_DEPTH_VERT, SRC_DEPTH_FRAG );
+	m_DepthShader.CompileSource( SRC_DEPTH_VERT, SRC_DEPTH_FRAG );
 
 	//--------------------------------------------------- Shadow buffer
-	m_ShadowFramebuffer	= PR_CResource::Create<PR_CFramebufferResource>( );
-	m_ShadowTexture		= PR_CResource::Create<PR_CTextureResource>( );
-	m_ShadowDepthTexture= PR_CResource::Create<PR_CTextureResource>( );
+	m_ShadowFramebuffer.Create( );
+	m_ShadowTexture.Create( );
+	m_ShadowDepthTexture.Create( );
 
-	m_ShadowFramebuffer->SetResolution( PR_CContext::Instance( )->GetWindowWidth( ), PR_CContext::Instance( )->GetWindowHeight( ) );
-	m_ShadowFramebuffer->BindTextureColor( m_ShadowTexture, 0, GL_RED, GL_UNSIGNED_BYTE );
-	m_ShadowFramebuffer->BindTextureDepth( m_ShadowDepthTexture );
+	m_ShadowFramebuffer.BindTextureColor( m_ShadowTexture, 0, GL_RED, GL_UNSIGNED_BYTE );
+	m_ShadowFramebuffer.BindTextureDepth( m_ShadowDepthTexture );
 
 	//--------------------------------------------------- Shadow shader
-	m_ShadowShader = PR_CResource::Create<PR_CShaderResource>( );
-	m_ShadowShader->Compile( SRC_SHADOW_VERT, SRC_SHADOW_FRAG );
+	m_ShadowShader.CompileSource( SRC_SHADOW_VERT, SRC_SHADOW_FRAG );
 
-	PR_ASSERT_MSG( m_DepthFramebuffer->IsComplete( ), "Depth buffer isn't complete" );
-	PR_ASSERT_MSG( m_ShadowFramebuffer->IsComplete( ), "Shadow buffer isn't complete" );
+	PR_ASSERT_MSG( m_DepthFramebuffer.IsComplete( ), "Depth buffer isn't complete" );
+	PR_ASSERT_MSG( m_ShadowFramebuffer.IsComplete( ), "Shadow buffer isn't complete" );
 }

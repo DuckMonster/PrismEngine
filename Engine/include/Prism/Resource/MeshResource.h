@@ -8,12 +8,10 @@ public:
 	~PR_CMeshResource( );
 
 	void Render( );
+	bool LoadFromFile( const std::string& path );
+	void Delete( );
 
 private:
-	bool Load( const std::string& path ) override;
-	bool Create( ) override;
-	void Delete( ) override;
-
 	bool LoadAssimp( const char* fileName );
 
 	GLuint			m_objectHandle;

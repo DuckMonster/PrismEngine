@@ -22,15 +22,15 @@ public:
 	void Render( double delta ) override;
 
 private:
-	PR_CShaderResource*			m_Shader;
+	PR_CShaderResource			m_Shader;
 
 	PR_CMaterial				m_Material;
 	PR_CMaterial				m_GroundMaterial;
 
-	PR_CMeshResource*			m_mesh;
-	PR_CMeshResource*			m_plane;
-	PR_CMeshResource*			m_Car;
-	PR_CTextureResource*		m_Texture;
+	PR_CMeshResource			m_mesh;
+	PR_CMeshResource			m_plane;
+	PR_CMeshResource			m_Car;
+	PR_CTextureResource			m_Texture;
 	PR_CRenderer				m_Renderer;
 	PR_CDeferredRenderer		m_DeferredRenderer;
 	PR_CShadowMapRenderer		m_ShadowRenderer;

@@ -16,6 +16,12 @@ PR_CFramebufferResource::PR_CFramebufferResource( ) :
 	m_Handle( -1 ), m_Width( 0 ), m_Height( 0 ) {
 }
 
+/**	Destructor
+*******************************************************************************/
+PR_CFramebufferResource::~PR_CFramebufferResource( ) {
+	Delete( );
+}
+
 /**	Is Complete
 *******************************************************************************/
 bool PR_CFramebufferResource::IsComplete( ) {
@@ -50,7 +56,7 @@ void PR_CFramebufferResource::SetResolution( size_t width, size_t height ) {
 
 /**	Bind Texture Color
 *******************************************************************************/
-void PR_CFramebufferResource::BindTextureColor( PR_CTextureResource* texture, size_t index, GLuint format, GLuint type ) {
+void PR_CFramebufferResource::BindTextureColor( PR_CTextureResource& texture, size_t index, GLuint format, GLuint type ) {
 	PR_ASSERT_MSG( m_Width != 0 && m_Height != 0, "Framebuffer size not set" );
 
 	// Get the correct data format (based on internal format)
@@ -60,7 +66,7 @@ void PR_CFramebufferResource::BindTextureColor( PR_CTextureResource* texture, si
 	case GL_RGBA16F: dataFormat = GL_RGBA; break;
 	}
 
-	GLuint texHandle = texture->GetHandle( );
+	GLuint texHandle = texture.GetHandle( );
 
 	glBindFramebuffer( GL_FRAMEBUFFER, m_Handle );
 	glBindTexture( GL_TEXTURE_2D, texHandle );
@@ -77,10 +83,10 @@ void PR_CFramebufferResource::BindTextureColor( PR_CTextureResource* texture, si
 
 /**	Bind Texture Depth
 *******************************************************************************/
-void PR_CFramebufferResource::BindTextureDepth( PR_CTextureResource* texture ) {
+void PR_CFramebufferResource::BindTextureDepth( PR_CTextureResource& texture ) {
 	PR_ASSERT_MSG( m_Width != 0 && m_Height != 0, "Framebuffer size not set" );
 
-	GLuint texHandle = texture->GetHandle( );
+	GLuint texHandle = texture.GetHandle( );
 
 	glBindFramebuffer( GL_FRAMEBUFFER, m_Handle );
 	glBindTexture( GL_TEXTURE_2D, texHandle );
@@ -92,15 +98,29 @@ void PR_CFramebufferResource::BindTextureDepth( PR_CTextureResource* texture ) {
 	glBindTexture( GL_TEXTURE_2D, 0 );
 }
 
-/**	Create
+/**	Create ( defaults to current context size )
 *******************************************************************************/
 bool PR_CFramebufferResource::Create( ) {
+	return Create( PR_CContext::Instance( )->GetWindowWidth( ), PR_CContext::Instance( )->GetWindowHeight( ) );
+}
+
+/**	Create
+*******************************************************************************/
+bool PR_CFramebufferResource::Create( size_t width, size_t height ) {
+	if (IsValid( ))
+		return false;
+
 	glCreateFramebuffers( 1, &m_Handle );
+	SetResolution( width, height );
+
 	return true;
 }
 
 /**	Release
 *******************************************************************************/
 void PR_CFramebufferResource::Delete( ) {
+	if (!IsValid( ))
+		return;
+
 	glDeleteFramebuffers( 1, &m_Handle );
 }

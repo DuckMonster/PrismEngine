@@ -27,6 +27,17 @@ namespace {
 
 		return std::string( s_fileBuffer );
 	}
+
+	/**	Get File Extension
+	*******************************************************************************/
+	std::string TrimExtension( const std::string& file ) {
+		for (int i = file.length( ) - 1; i >= 0; --i) {
+			if (file[i] == '.')
+				return file.substr( 0, i );
+		}
+
+		return file;
+	}
 }
 
 /**	Constructor
@@ -50,12 +61,14 @@ void PR_CShaderResource::Use( ) {
 
 /**	Compile
 *******************************************************************************/
-void PR_CShaderResource::Compile( const char* vertSrc, const char* fragSrc ) {
+void PR_CShaderResource::CompileSource( const char* vertSrc, const char* fragSrc ) {
 	static char s_logBuffer[256];
 
-	PR_ASSERT_MSG( m_shaderHandle != -1, "Shader isn't created" );
+	Delete( );
 
 	// Create pipeline
+	m_shaderHandle = glCreateProgram( );
+
 	GLuint vertShader, fragShader;
 	vertShader = CreateShaderFromSource( GL_VERTEX_SHADER, vertSrc );
 	fragShader = CreateShaderFromSource( GL_FRAGMENT_SHADER, fragSrc );
@@ -79,40 +92,27 @@ void PR_CShaderResource::Compile( const char* vertSrc, const char* fragSrc ) {
 	glDeleteShader( fragShader );
 }
 
-/**	Compile file
+/**	Compile files (joint name with .vert and .frag extension)
 *******************************************************************************/
-void PR_CShaderResource::CompileFile( const std::string& vertPath, const std::string& fragPath ) {
-	std::string vertSrc = ReadFile( vertPath ),
-		fragSrc = ReadFile( fragPath );
-
-	Compile( vertSrc.c_str( ), fragSrc.c_str( ) );
+void PR_CShaderResource::CompileFiles( const std::string& fileName ) {
+	string trimmed = TrimExtension( fileName );
+	CompileFiles( trimmed + ".vert", trimmed + ".frag" );
 }
 
-/**	Load
+/**	Compile files
 *******************************************************************************/
-bool PR_CShaderResource::Load( const std::string& path ) {
-	string vertFile( path ), fragFile( path );
-	vertFile += ".vert";
-	fragFile += ".frag";
+void PR_CShaderResource::CompileFiles( const std::string& vertPath, const std::string& fragPath ) {
+	std::string vertSrc = ReadFile( GetResourceDirectory() + vertPath ),
+		fragSrc = ReadFile( GetResourceDirectory( ) + fragPath );
 
-	Create( );
-	CompileFile( vertFile, fragFile );
-
-	return true;
-}
-
-/**	Create
-*******************************************************************************/
-bool PR_CShaderResource::Create( ) {
-	m_shaderHandle = glCreateProgram( );
-	return true;
+	CompileSource( vertSrc.c_str( ), fragSrc.c_str( ) );
 }
 
 /**	Release
 *******************************************************************************/
 void PR_CShaderResource::Delete( ) {
 	// Already released
-	if (m_shaderHandle == -1)
+	if (!IsValid( ))
 		return;
 
 	glDeleteProgram( m_shaderHandle );

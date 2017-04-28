@@ -51,6 +51,8 @@ void CProgram::Init( ) {
 	//PR_CImageResource* image = PR_CResource::Load<PR_CImageResource>( "sample.bmp" );
 	PR_CImageResource* image = PR_CResource::Load<PR_CImageResource>( "Apt.hdr" );
 	m_SkyboxTexture = PR_CResource::Create<PR_CTextureResource>( );
+
+
 	m_SkyboxTexture->LoadImage( image );
 
 	float* pix = (float*)image->GetPixel( 200, 100 );

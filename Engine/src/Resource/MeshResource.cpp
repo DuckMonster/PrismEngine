@@ -20,12 +20,12 @@ PR_CMeshResource::PR_CMeshResource( ) :
 /**	Destructor
 *******************************************************************************/
 PR_CMeshResource::~PR_CMeshResource( ) {
-
+	Delete( );
 }
 
 /**	Load
 *******************************************************************************/
-bool PR_CMeshResource::Load( const std::string& path ) {
+bool PR_CMeshResource::LoadFromFile( const std::string& path ) {
 	// Gen buffers
 	glGenVertexArrays( 1, &m_objectHandle );
 	glGenBuffers( 1, &m_positionHandle );
@@ -34,39 +34,8 @@ bool PR_CMeshResource::Load( const std::string& path ) {
 	glGenBuffers( 1, &m_elementsHandle );
 
 	// Load mesh data
-	if (!LoadAssimp( path.c_str( ) ))
+	if (!LoadAssimp( GetResourceDirectory( ) + path ))
 		return false;
-
-	// Bind vertex objects
-	glBindVertexArray( m_objectHandle );
-	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_elementsHandle );
-
-	glBindBuffer( GL_ARRAY_BUFFER, m_positionHandle );
-	glEnableVertexAttribArray( 0 );
-	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, 0 );
-
-	glBindBuffer( GL_ARRAY_BUFFER, m_normalHandle );
-	glEnableVertexAttribArray( 1 );
-	glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, 0, 0 );
-
-	glBindBuffer( GL_ARRAY_BUFFER, m_uvHandle );
-	glEnableVertexAttribArray( 2 );
-	glVertexAttribPointer( 2, 2, GL_FLOAT, GL_FALSE, 0, 0 );
-
-	glBindVertexArray( 0 );
-
-	return true;
-}
-
-/**	Create
-*******************************************************************************/
-bool PR_CMeshResource::Create( ) {
-	// Gen buffers
-	glGenVertexArrays( 1, &m_objectHandle );
-	glGenBuffers( 1, &m_positionHandle );
-	glGenBuffers( 1, &m_normalHandle );
-	glGenBuffers( 1, &m_uvHandle );
-	glGenBuffers( 1, &m_elementsHandle );
 
 	// Bind vertex objects
 	glBindVertexArray( m_objectHandle );
@@ -173,7 +142,7 @@ bool PR_CMeshResource::LoadAssimp( const char* fileName ) {
 		vertices.insert( vertices.end( ), mVertArr, mVertArr + vertexNum );
 		normals.insert( normals.end( ), mNormalArr, mNormalArr + vertexNum );
 		uvs.insert( uvs.end( ), mUVArr, mUVArr + vertexNum );
-		indicies.insert(indicies.end(), mIndexArr, mIndexArr + indexNum);
+		indicies.insert( indicies.end( ), mIndexArr, mIndexArr + indexNum );
 	}
 
 	glBindVertexArray( 0 );
