@@ -21,10 +21,10 @@ bool PR_CImageResource::sm_FreeImageInitialized = false;
 *******************************************************************************/
 PR_CImageResource::PR_CImageResource( ) : PR_CResource( ),
 m_Format( FIF_UNKNOWN ),
-m_Bitmap( NULL ),
+m_Bitmap( nullptr ),
 m_Width( -1 ),
 m_Height( -1 ),
-m_Bits( NULL ) {
+m_Bits( nullptr ) {
 }
 
 /**	Destructor
@@ -93,17 +93,19 @@ bool PR_CImageResource::LoadFromFile( const std::string& path ) {
 	if (sm_FreeImageInitialized)
 		InitFreeImage( );
 
+	std::string absolutePath = GetResourceDirectory( ) + path;
+
 	if (IsLoaded( ))
 		Delete( );
 
-	m_Format = FreeImage_GetFileType( path.c_str( ) );
+	m_Format = FreeImage_GetFileType( absolutePath.c_str( ) );
 
 	// Try to parse file format from the filename
 	if (m_Format == FIF_UNKNOWN)
-		m_Format = FreeImage_GetFIFFromFilename( path.c_str( ) );
+		m_Format = FreeImage_GetFIFFromFilename( absolutePath.c_str( ) );
 	// Nothing found :(
 	if (m_Format == FIF_UNKNOWN) {
-		PR_CLogger( PR_LOG_LEVEL_HIGH ) << "Couldn't find file format of " << path;
+		PR_CLogger( PR_LOG_LEVEL_HIGH ) << "Couldn't find file format of " << absolutePath;
 		return false;
 	}
 
@@ -112,7 +114,12 @@ bool PR_CImageResource::LoadFromFile( const std::string& path ) {
 		return false;
 	}
 
-	m_Bitmap		= FreeImage_Load( m_Format, path.c_str( ) );
+	m_Bitmap		= FreeImage_Load( m_Format, absolutePath.c_str( ) );
+	// Failed to load image
+	if (m_Bitmap == nullptr) {
+		PR_CLogger( PR_LOG_LEVEL_HIGH ) << "Image file " << absolutePath << " not found";
+		return false;
+	}
 
 	m_ColorFormat	= FreeImage_GetColorType( m_Bitmap );
 	m_DataType		= FreeImage_GetImageType( m_Bitmap );
@@ -121,6 +128,8 @@ bool PR_CImageResource::LoadFromFile( const std::string& path ) {
 	m_Components	= FreeImage_GetColorsUsed( m_Bitmap );
 	m_BPP			= FreeImage_GetBPP( m_Bitmap );
 	m_Bits			= FreeImage_GetBits( m_Bitmap );
+
+	return true;
 }
 
 /**	Delete
@@ -131,8 +140,8 @@ void PR_CImageResource::Delete( ) {
 
 	FreeImage_Unload( m_Bitmap );
 	m_Format = FIF_UNKNOWN;
-	m_Bitmap = NULL;
+	m_Bitmap = nullptr;
 	m_Width = -1;
 	m_Height = -1;
-	m_Bitmap = NULL;
+	m_Bitmap = nullptr;
 }

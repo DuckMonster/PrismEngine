@@ -38,6 +38,7 @@ PR_CContext::PR_CContext( ) {
 *******************************************************************************/
 void PR_CContext::CreateWindow( const sf::VideoMode& videoMode, const char* title, const sf::ContextSettings& settings ) {
 	m_Window = new sf::Window( videoMode, title, sf::Style::Default, settings );
+	m_Window->setFramerateLimit( 120 );
 	glewInit( );
 }
 

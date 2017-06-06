@@ -13,7 +13,7 @@ void PR_CFramebufferResource::Release( ) {
 /**	Constructor
 *******************************************************************************/
 PR_CFramebufferResource::PR_CFramebufferResource( ) :
-	m_Handle( -1 ), m_Width( 0 ), m_Height( 0 ) {
+	m_Handle( 0 ), m_Width( 0 ), m_Height( 0 ) {
 }
 
 /**	Destructor
@@ -24,7 +24,10 @@ PR_CFramebufferResource::~PR_CFramebufferResource( ) {
 
 /**	Is Complete
 *******************************************************************************/
-bool PR_CFramebufferResource::IsComplete( ) {
+bool PR_CFramebufferResource::IsComplete( ) const {
+	if (!IsValid( ))
+		return false;
+
 	GLint prevFBO;
 	glGetIntegerv( GL_FRAMEBUFFER_BINDING, &prevFBO );
 
@@ -37,7 +40,7 @@ bool PR_CFramebufferResource::IsComplete( ) {
 
 /**	Bind
 *******************************************************************************/
-void PR_CFramebufferResource::Bind( ) {
+void PR_CFramebufferResource::Bind( ) const {
 	// Bind frame buffer and draw buffers
 	glBindFramebuffer( GL_FRAMEBUFFER, m_Handle );
 
@@ -71,7 +74,7 @@ void PR_CFramebufferResource::BindTextureColor( PR_CTextureResource& texture, si
 	glBindFramebuffer( GL_FRAMEBUFFER, m_Handle );
 	glBindTexture( GL_TEXTURE_2D, texHandle );
 
-	glTexImage2D( GL_TEXTURE_2D, 0, format, m_Width, m_Height, 0, dataFormat, type, NULL );
+	glTexImage2D( GL_TEXTURE_2D, 0, format, m_Width, m_Height, 0, dataFormat, type, nullptr );
 	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + index, GL_TEXTURE_2D, texHandle, 0 );
 
 	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
@@ -91,7 +94,7 @@ void PR_CFramebufferResource::BindTextureDepth( PR_CTextureResource& texture ) {
 	glBindFramebuffer( GL_FRAMEBUFFER, m_Handle );
 	glBindTexture( GL_TEXTURE_2D, texHandle );
 
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_Width, m_Height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_Width, m_Height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr );
 	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, texHandle, 0 );
 
 	glBindFramebuffer( GL_FRAMEBUFFER, 0 );

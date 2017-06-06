@@ -79,7 +79,7 @@ void PR_CShaderResource::CompileSource( const char* vertSrc, const char* fragSrc
 	glLinkProgram( m_shaderHandle );
 
 	// Get errors
-	glGetProgramInfoLog( m_shaderHandle, 1 << 16, NULL, s_logBuffer );
+	glGetProgramInfoLog( m_shaderHandle, 1 << 16, nullptr, s_logBuffer );
 	if (strlen( s_logBuffer ) > 0) {
 		cout << "SHADER ERROR:\n"
 			<< s_logBuffer << "\n---------\n\n";
@@ -124,7 +124,7 @@ void PR_CShaderResource::Delete( ) {
 GLuint PR_CShaderResource::CreateShaderFromSource( GLuint shaderType, const char* src ) {
 	GLuint shader = glCreateShader( shaderType );
 
-	glShaderSource( shader, 1, &src, NULL );
+	glShaderSource( shader, 1, &src, nullptr );
 	glCompileShader( shader );
 
 	return shader;

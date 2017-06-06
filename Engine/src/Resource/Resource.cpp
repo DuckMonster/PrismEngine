@@ -7,6 +7,12 @@ const std::string PR_CResource::GetResourceDirectory( ) {
 	return sm_AssetDirectory;
 }
 
+/**	SetResourceDirectory
+*******************************************************************************/
+void PR_CResource::SetResourceDirectory( const std::string & directory ) {
+	sm_AssetDirectory = directory;
+}
+
 std::string PR_CResource::sm_AssetDirectory = "./Assets/";
 //---------------------------------------------------
 

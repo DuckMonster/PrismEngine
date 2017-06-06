@@ -16,6 +16,8 @@ CProgram::CProgram( ) {
 void CProgram::Init( ) {
 	PR_CLogger::sm_LogLevel = PR_LOG_LEVEL_TRIVIAL;
 
+	PR_CResource::SetResourceDirectory( "./Assets/" );
+
 	m_Shader.CompileFiles( "Shader/Deferred/shdr_deferred_base" );
 	m_mesh.LoadFromFile( "UnitCube.fbx" );
 	m_plane.LoadFromFile( "UnitPlane.fbx" );
@@ -27,11 +29,19 @@ void CProgram::Init( ) {
 
 	m_GroundMaterial = m_Material;
 	m_GroundMaterial.SetColor( glm::vec4( 0.f, 1.f, 0.f, 1.f ) );
+
+	m_TextMesh.LoadFont( "font.png", 7, 7 );
+	m_TextMesh.SetString( "Hello world!" );
 }
 
 /**	Update
 *******************************************************************************/
 void CProgram::Update( double delta ) {
+	static float t = 0.f;
+	t += delta;
+
+	/*if (t >= 0.5f)
+		PR_CLogger( PR_LOG_LEVEL_LOW ) << delta;*/
 }
 
 /**	Render
@@ -68,43 +78,42 @@ void CProgram::Render( double delta ) {
 	world = glm::rotate( world, t, glm::vec3( 0.f, 1.f, 0.f ) );
 	scene.AddMesh( &m_mesh, &m_Material, world );
 
-	world = glm::translate( glm::mat4( 1.f ), glm::vec3( 0.f, -0.5f, 0.f ) );
+	world = glm::translate( glm::mat4( 1.f ), glm::vec3( 0.f, -0.5f, 0.f )  );
 	world = glm::scale( world, glm::vec3( 100.f ) );
 	scene.AddMesh( &m_plane, &m_GroundMaterial, world );
 
-	m_DeferredRenderer.Render( scene );
+	//m_DeferredRenderer.Render( scene );
 	m_Renderer.Render( scene );
-	m_ShadowRenderer.Render( scene );
 
-	PR_CFramebufferResource::Release( );
+	std::string fpsString = "FPS: " + std::to_string( (int)(1.0 / delta) );
 
-	glDisable( GL_DEPTH_TEST );
+	m_TextMesh.SetString( fpsString );
+	m_TextMesh.Render( 2, 10, 1 );
+	//m_ShadowRenderer.Render( scene );
 
-	float left = -1.f,
-		right = 0.5f,
-		top = 1.f,
-		bottom = -0.5f,
-		width = right - left,
-		height = top - bottom;
+	//PR_CFramebufferResource::Release( );
+	//glDisable( GL_DEPTH_TEST );
 
-	glm::mat4 quadMatrix(
-		(right - left) / 2.f, 0.f, 0.f, 0.f,
-		0.f, (top - bottom) / 2.f, 0.f, 0.f,
-		0.f, 0.f, 1.f, 0.f,
-		(right + left) / 2.f, (bottom + top) / 2.f, 0.f, 1.f
-	);
+	//float left = -1.f,
+	//	right = 0.5f,
+	//	top = 1.f,
+	//	bottom = -0.5f,
+	//	width = right - left,
+	//	height = top - bottom;
 
-	PR_SGBuffer* gBuffer = m_DeferredRenderer.GetGBuffer( );
-	PR_CTextureResource* lightResult = m_LightRenderer.ApplyTo( scene, gBuffer, &m_ShadowRenderer.GetShadowTexture( ) );
-	PR_CTextureResource* postResult = lightResult;// m_TestPosteffect.ApplyTo( lightResult );
+	//glm::mat4 quadMatrix(
+	//	(right - left) / 2.f, 0.f, 0.f, 0.f,
+	//	0.f, (top - bottom) / 2.f, 0.f, 0.f,
+	//	0.f, 0.f, 1.f, 0.f,
+	//	(right + left) / 2.f, (bottom + top) / 2.f, 0.f, 1.f
+	//);
 
-	if (!sf::Keyboard::isKeyPressed( sf::Keyboard::Space ))
-		postResult = m_FXAA.ApplyTo( lightResult );
+	//PR_SGBuffer* gBuffer = m_DeferredRenderer.GetGBuffer( );
+	//PR_CTextureResource* lightResult = m_LightRenderer.ApplyTo( scene, gBuffer, &m_ShadowRenderer.GetShadowTexture( ) );
+	//PR_CTextureResource* postResult = lightResult;// m_TestPosteffect.ApplyTo( lightResult );
 
-	PR_RenderTexture( postResult );
+	//if (!sf::Keyboard::isKeyPressed( sf::Keyboard::Space ))
+	//	postResult = m_FXAA.ApplyTo( lightResult );
 
-	//GetQuadShader( )->Use( );
-	//GetQuadShader( )->Set( "u_QuadMatrix", glm::mat4( 1.f ) ); // quadMatrix )
-	//m_ShadowRenderer.GetShadowTexture( )->Bind( 0 );
-	//glDrawArrays( GL_QUADS, 0, 4 );
+	//PR_RenderTexture( *postResult );
 }

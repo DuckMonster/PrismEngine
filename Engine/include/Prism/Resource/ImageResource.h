@@ -13,7 +13,7 @@ public:
 	PR_CImageResource( );
 	~PR_CImageResource( );
 
-	const bool IsLoaded( ) { return m_Bitmap == NULL; }
+	const bool IsLoaded( ) { return m_Bitmap != nullptr; }
 
 	const int GetWidth( ) { return m_Width; }
 	const int GetHeight( ) { return m_Height; }

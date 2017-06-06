@@ -45,14 +45,14 @@ uniform Material u_Material;\
 \
 layout( location = 0 ) out vec3 o_Color;\
 layout( location = 1 ) out vec3 o_Normal;\
-layout( location = 2 ) out vec3 o_Diffuse;\
+layout( location = 2 ) out vec4 o_Diffuse;\
 \
 void main( ) {\
 	o_Color = fs_in.world;\
 	o_Normal = fs_in.normal;\
 	o_Diffuse = texture(u_Material.sampler, fs_in.uv).xyz;\
 	o_Diffuse = mix(vec3(1.0), o_Diffuse, u_Material.textureWeight);\
-	o_Diffuse *= u_Material.color.xyz;\
+	o_Diffuse *= u_Material.color.rgba;\
 }";
 }
 
@@ -68,8 +68,9 @@ void PR_CDeferredRenderer::Render( PR_CRenderScene & scene ) {
 
 	m_Framebuffer.Bind( );
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+	glDisable( GL_BLEND );
 
-	PR_CRenderScene::SNode* node = NULL;
+	PR_CRenderScene::SNode* node = nullptr;
 
 	// Render all nodes
 	for (node = scene.GetRoot( ); node; node = node->m_Next) {
@@ -84,7 +85,7 @@ void PR_CDeferredRenderer::Render( PR_CRenderScene & scene ) {
 				m_Shader.Set( "u_World", meshNode->m_Transform );
 
 				m_Shader.Set( "u_Material.color", material->GetColor( ) );
-				if (material->GetTexture( ) != NULL) {
+				if (material->GetTexture( ) != nullptr) {
 					material->GetTexture( )->Bind( 0 );
 					m_Shader.Set( "u_Material.textureWeight", 1.f );
 				}
@@ -104,7 +105,7 @@ void PR_CDeferredRenderer::Render( PR_CRenderScene & scene ) {
 /**	Load Resources
 *******************************************************************************/
 void PR_CDeferredRenderer::LoadResources( ) {
-	if (m_Framebuffer.IsValid( ) || m_Shader.IsValid( ))
+	if (m_Framebuffer.IsComplete( ) || m_Shader.IsValid( ))
 		return;
 
 	// Framebuffer
@@ -116,9 +117,11 @@ void PR_CDeferredRenderer::LoadResources( ) {
 
 	m_Framebuffer.BindTextureColor( m_GBuffer.Position, 0, GL_RGB16F, GL_FLOAT );
 	m_Framebuffer.BindTextureColor( m_GBuffer.Normal, 1, GL_RGB16F, GL_FLOAT );
-	m_Framebuffer.BindTextureColor( m_GBuffer.Diffuse, 2, GL_RGB, GL_UNSIGNED_BYTE );
+	m_Framebuffer.BindTextureColor( m_GBuffer.Diffuse, 2, GL_RGBA, GL_UNSIGNED_BYTE );
 	m_Framebuffer.BindTextureDepth( m_GBuffer.Depth );
 
 	// Shader
 	m_Shader.CompileSource( SRC_DEFERRED_VERT, SRC_DEFERRED_FRAG );
+
+	PR_ASSERT( m_Framebuffer.IsComplete( ) && m_Shader.IsValid( ) );
 }

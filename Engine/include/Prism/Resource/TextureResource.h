@@ -14,8 +14,8 @@ public:
 	void Create( );
 	void Delete( );
 
-	void Bind( unsigned int id );
-	const GLuint& GetHandle( ) { return m_Handle; }
+	void Bind( unsigned int id ) const;
+	const GLuint& GetHandle( ) const { return m_Handle; }
 
 	void SetFilter( GLuint filter );
 	void SetWrapMode( GLuint wrapMode );
@@ -23,7 +23,5 @@ public:
 protected:
 
 private:
-	int			m_Width;
-	int			m_Height;
 	GLuint		m_Handle;
 };

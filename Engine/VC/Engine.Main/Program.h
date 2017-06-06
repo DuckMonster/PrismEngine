@@ -8,6 +8,7 @@
 #include <Prism/Render/DeferredRenderer.h>
 #include <Prism/Render/ShadowMapRenderer.h>
 #include <Prism/Render/PostEffect/FXAA.h>
+#include <Prism/Render/TextMesh.h>
 #include "LightRenderer.h"
 #include "TestPosteffect.h"
 
@@ -34,6 +35,8 @@ private:
 	PR_CRenderer				m_Renderer;
 	PR_CDeferredRenderer		m_DeferredRenderer;
 	PR_CShadowMapRenderer		m_ShadowRenderer;
+
+	PR_CTextMesh				m_TextMesh;
 
 	CLightRenderer				m_LightRenderer;
 	CTestPosteffect				m_TestPosteffect;

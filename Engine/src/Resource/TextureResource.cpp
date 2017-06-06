@@ -5,12 +5,12 @@
 *******************************************************************************/
 PR_CTextureResource::PR_CTextureResource( ) :
 	PR_CResource( ),
-	m_Handle( -1 ), m_Width( 0 ), m_Height( 0 ) {
+	m_Handle( -1 ) {
 }
 
 /**	Bind
 *******************************************************************************/
-void PR_CTextureResource::Bind( unsigned int id ) {
+void PR_CTextureResource::Bind( unsigned int id ) const {
 	PR_ASSERT_MSG( m_Handle != -1, "Texture isn't created" );
 	glActiveTexture( GL_TEXTURE0 + id );
 	glEnable( GL_TEXTURE_2D );
@@ -39,13 +39,12 @@ bool PR_CTextureResource::LoadFromImage( PR_CImageResource& image ) {
 	if (!image.IsLoaded( ))
 		return false;
 
-	m_Width = image.GetWidth( );
-	m_Height = image.GetHeight( );
+	Create( );
 
 	GLuint dataFormat = image.GetGLDataFormat( );
 	GLuint dataType = image.GetGLDataType( );
 
-	GLuint internalFormat;
+	GLuint internalFormat = GL_RGBA;
 
 	switch (dataFormat) {
 	case GL_RGB:
@@ -58,7 +57,7 @@ bool PR_CTextureResource::LoadFromImage( PR_CImageResource& image ) {
 
 	Bind( 0 );
 	glTexImage2D( GL_TEXTURE_2D, 0, internalFormat,
-		m_Width, m_Height, 0,
+		image.GetWidth(), image.GetHeight(), 0,
 		dataFormat, dataType, image.GetBits( ) );
 
 	return true;

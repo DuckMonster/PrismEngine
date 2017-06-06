@@ -8,6 +8,7 @@ class PR_CResource {
 	//--------------------------------------------------- Manager
 public:
 	static const std::string GetResourceDirectory( );
+	static void SetResourceDirectory( const std::string& directory );
 
 private:
 	static std::string								sm_AssetDirectory;

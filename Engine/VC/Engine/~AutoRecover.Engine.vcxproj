@@ -58,7 +58,6 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(PrismDir)include;$(PrismDir).dependency\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;SFML_STATIC;PRISM_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Lib>
       <AdditionalDependencies>opengl32.lib;winmm.lib;gdi32.lib;glew32s.lib;assimp-vc140-mt-d.lib;sfml-system-s-d.lib;sfml-window-s-d.lib;SOIL-d.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -104,7 +103,6 @@
     <ClInclude Include="..\..\include\Prism\Render\Renderer.h" />
     <ClInclude Include="..\..\include\Prism\Render\RenderScene.h" />
     <ClInclude Include="..\..\include\Prism\Render\ShadowMapRenderer.h" />
-    <ClInclude Include="..\..\include\Prism\Render\TextMesh.h" />
     <ClInclude Include="..\..\include\Prism\Resource\FramebufferResource.h" />
     <ClInclude Include="..\..\include\Prism\Resource\ImageResource.h" />
     <ClInclude Include="..\..\include\Prism\Resource\MeshResource.h" />
@@ -115,6 +113,7 @@
     <ClInclude Include="..\..\include\Prism\Utils\DirLight.h" />
     <ClInclude Include="..\..\include\Prism\Utils\Log.h" />
     <ClInclude Include="..\..\include\Prism\Utils\RenderUtils.h" />
+    <ClInclude Include="TextMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\Context.cpp" />
@@ -124,7 +123,6 @@
     <ClCompile Include="..\..\src\Render\Renderer.cpp" />
     <ClCompile Include="..\..\src\Render\RenderScene.cpp" />
     <ClCompile Include="..\..\src\Render\ShadowMapRenderer.cpp" />
-    <ClCompile Include="..\..\src\Render\TextMesh.cpp" />
     <ClCompile Include="..\..\src\Resource\FramebufferResource.cpp" />
     <ClCompile Include="..\..\src\Resource\ImageResource.cpp" />
     <ClCompile Include="..\..\src\Resource\Resource.cpp" />
@@ -135,6 +133,7 @@
     <ClCompile Include="..\..\src\Utils\DirLight.cpp" />
     <ClCompile Include="..\..\src\Utils\Log.cpp" />
     <ClCompile Include="..\..\src\Utils\RenderUtils.cpp" />
+    <ClCompile Include="TextMesh.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

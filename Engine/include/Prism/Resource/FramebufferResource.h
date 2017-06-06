@@ -16,11 +16,11 @@ public:
 	bool Create( size_t width, size_t height );
 	void Delete( );
 
-	GLuint GetHandle( ) { return m_Handle; }
-	bool IsValid( ) { return m_Handle != -1; }
-	bool IsComplete( );
+	GLuint GetHandle( ) const { return m_Handle; }
+	bool IsValid( ) const { return m_Handle != 0; }
+	bool IsComplete( ) const;
 
-	void Bind( );
+	void Bind( ) const;
 	void SetResolution( size_t width, size_t height );
 
 	void BindTextureColor( PR_CTextureResource& texture, size_t index, GLuint format, GLuint type );

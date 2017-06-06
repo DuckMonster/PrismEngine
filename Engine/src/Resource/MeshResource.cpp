@@ -26,6 +26,8 @@ PR_CMeshResource::~PR_CMeshResource( ) {
 /**	Load
 *******************************************************************************/
 bool PR_CMeshResource::LoadFromFile( const std::string& path ) {
+	std::string absolutePath = GetResourceDirectory( ) + path;
+
 	// Gen buffers
 	glGenVertexArrays( 1, &m_objectHandle );
 	glGenBuffers( 1, &m_positionHandle );
@@ -34,7 +36,7 @@ bool PR_CMeshResource::LoadFromFile( const std::string& path ) {
 	glGenBuffers( 1, &m_elementsHandle );
 
 	// Load mesh data
-	if (!LoadAssimp( GetResourceDirectory( ) + path ))
+	if (!LoadAssimp( absolutePath.c_str() ))
 		return false;
 
 	// Bind vertex objects
@@ -115,12 +117,12 @@ bool PR_CMeshResource::LoadAssimp( const char* fileName ) {
 		for (size_t i = 0; i < fbxMesh->mNumVertices; i++) {
 			mVertArr[i] = fbxMesh->mVertices[i];
 
-			if (fbxMesh->mNormals != NULL)
+			if (fbxMesh->mNormals != nullptr)
 				mNormalArr[i] = fbxMesh->mNormals[i];
 			else
 				mNormalArr[i] = aiVector3D( 0 );
 
-			if (fbxMesh->mTextureCoords[0] != NULL) {
+			if (fbxMesh->mTextureCoords[0] != nullptr) {
 				aiVector3D uv = fbxMesh->mTextureCoords[0][i];
 				mUVArr[i] = aiVector2D( uv.x, uv.y );
 			}
